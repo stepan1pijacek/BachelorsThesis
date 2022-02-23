@@ -1,0 +1,11 @@
+name: MAI
+dependencies:
+  - tensorflow_addons
+  - tensorflow
+  - pickle
+  - numpy
+  - pandas
+  - seaborn
+  - matplotlib
+  - sklearn
+  

@@ -1,5 +1,5 @@
-import MAI.Model.ReCa.CapsuleNetwork as Caps
-import MAI.Training.train as train
+import Model.ReCa.CapsuleNetwork as Caps
+import Training.train as train
 
 
 def main():

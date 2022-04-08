@@ -1,13 +1,13 @@
 import tensorflow as tf
 from tensorflow.python.keras import layers as tf_layers
 from tensorflow.python.keras import Model
-from MAI.Model.ReCa.CapsuleLayer import Capsule
-from MAI.Model.ReCa.EmCapsuleLayer import EMCapsule
-from MAI.Model.ReCa.GammaCapsuleLayer import GammaCapsule
-from MAI.Model.ReCa.PrimaryCapsuleLayer import PrimaryCapsule
-from MAI.Model.ReCa.ReconstructionLayer import ReconstructionLayer
-from MAI.Model.ReCa.NormalizationLayer import Normalization
-from MAI.Model.ReCa.ResidualLayer import ResLayer
+from CapsuleLayer import Capsule
+from EmCapsuleLayer import EMCapsule
+from GammaCapsuleLayer import GammaCapsule
+from PrimaryCapsuleLayer import PrimaryCapsule
+from ReconstructionLayer import ReconstructionLayer
+from NormalizationLayer import Normalization
+from ResidualLayer import ResLayer
 from MAI.Utils.Params import DIMENSIONS, LAYERS, ROUTING, MAKE_SKIPS, NO_SKIPS, IMG_SIZE
 
 

@@ -12,6 +12,7 @@
         <option value="$MODULE_DIR$/MAI/Training" />
         <option value="$MODULE_DIR$/MAI/Utils" />
         <option value="$MODULE_DIR$/MAI/Model" />
+        <option value="$MODULE_DIR$/MAI" />
       </list>
     </option>
   </component>

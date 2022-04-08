@@ -1,6 +1,6 @@
 import tensorflow as tf
 from MAI.Utils.Functions.Squash import squash
-from tensorflow.keras import layers, models, Model
+from tensorflow.python.keras import layers, models, Model
 
 
 class Capsule(Model):

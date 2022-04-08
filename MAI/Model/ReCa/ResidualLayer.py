@@ -1,15 +1,7 @@
-import tensorflow as tf
-
-layers = tf.keras.layers
-models = tf.keras.models
+from tensorflow.python.keras import layers, models, Model
 
 
-class ResLayer(tf.keras.Models):
-    @staticmethod
-    def call(out_previous, out_skip):
+class ResLayer(Model):
+    def call(self, out_previous, out_skip, **kwargs):
         x = layers.Add()([out_previous, out_skip])
         return x
-
-    @staticmethod
-    def count_params():
-        return 0

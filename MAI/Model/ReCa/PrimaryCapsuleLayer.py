@@ -1,9 +1,9 @@
 import tensorflow as tf
-from tensorflow.keras import layers, models
+from tensorflow.python.keras import layers, Model
 from MAI.Utils.Functions.Squash import squash
 
 
-class PrimaryCapsule(tf.keras.Model):
+class PrimaryCapsule(Model):
 
     def __init__(self, channels=32, dim=8, kernel_size=(9, 9), strides=2, name=''):
         super(PrimaryCapsule, self).__init__(name=name)
@@ -21,7 +21,7 @@ class PrimaryCapsule(tf.keras.Model):
 
         self.reshape = layers.Reshape(target_shape=(-1, dim))
 
-    def call(self, inputs):
+    def call(self, inputs, **kwargs):
         x = self.conv1(inputs)
         x = self.reshape(x)
         x = squash(x)

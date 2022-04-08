@@ -5,4 +5,14 @@
     <orderEntry type="jdk" jdkName="Python 3.9 (MAI)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
+  <component name="PyNamespacePackagesService">
+    <option name="namespacePackageFolders">
+      <list>
+        <option value="$MODULE_DIR$/MAI/Model/ReCa" />
+        <option value="$MODULE_DIR$/MAI/Training" />
+        <option value="$MODULE_DIR$/MAI/Utils" />
+        <option value="$MODULE_DIR$/MAI/Model" />
+      </list>
+    </option>
+  </component>
 </module>

@@ -29,12 +29,12 @@ def prepareDataset(path="~/BachelorsThesis/Images"):
         if len(c_label) > 1:  # leave out empty labels
             all_xray_df[c_label] = all_xray_df['Finding Labels'].map(lambda finding: 1.0 if c_label in finding else 0)
 
-    with open(path + '/train_val_list.txt') as f:
+    with open('~/BachelorsThesis/Images/train_val_list.txt') as f:
         lines = f.readlines()
         lines = list([line.rstrip('\n') for line in lines])
         train_val_df = all_xray_df[all_xray_df['Image Index'].isin(lines)]
 
-    with open(path + '/test_list.txt') as f:
+    with open('~/BachelorsThesis/Images/test_list.txt') as f:
         lines = f.readlines()
         lines = list([line.rstrip('\n') for line in lines])
         test_df = all_xray_df[all_xray_df['Image Index'].isin(lines)]

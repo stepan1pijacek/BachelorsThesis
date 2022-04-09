@@ -6,9 +6,9 @@ import numpy as np
 import pandas as pd
 
 
-def prepareDataset(path="/home/BachelorsThesis/Images"):
+def prepareDataset(path="/BachelorsThesis/Images"):
 
-    all_xray_df = pd.read_csv(path + "/Data_Entry_2017_v2020.csv")
+    all_xray_df = pd.read_csv(path + '/Data_Entry_2017_v2020.csv')
 
     all_image_paths = {}
     for i in range(1, 13):

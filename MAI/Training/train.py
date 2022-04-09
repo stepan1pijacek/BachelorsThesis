@@ -1,6 +1,6 @@
 from pickle import dump
 import tensorflow_addons as tfa
-from tensorflow.python.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.python.keras.utils.version_utils import callbacks
 
 import MAI.Utils.Params as params

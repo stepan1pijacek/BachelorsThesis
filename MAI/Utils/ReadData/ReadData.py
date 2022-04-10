@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 
-def prepareDataset(path="/Images"):
+def prepareDataset(path="BachelorsThesis/Images"):
 
     all_xray_df = pd.read_csv(path + '/Data_Entry_2017_v2020.csv')
 

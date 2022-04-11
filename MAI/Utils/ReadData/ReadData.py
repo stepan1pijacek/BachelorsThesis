@@ -6,14 +6,15 @@ import numpy as np
 import pandas as pd
 
 
-def prepareDataset(path="~/BachelorsThesis/MAI/Utils/ReadData/Images"):
+def prepareDataset(path="Images/"):
 
     all_xray_df = pd.read_csv('Data_Entry_2017_v2020.csv')
 
     all_image_paths = {}
     for i in range(1, 13):
+        print(os.path.join(path, f'images_0{i}', '*.png'))
         all_image_paths.update({os.path.basename(x): x for x in
-                                glob('Images/' + f'images_0{i}' + '*.png')})
+                                glob(os.path.join(path, f'images_0{i}', '*.png'))})
 
     print('Scans found:', len(all_image_paths), ', Total Headers', all_xray_df.shape[0])
     all_xray_df['path'] = all_xray_df['Image Index'].map(all_image_paths.get)

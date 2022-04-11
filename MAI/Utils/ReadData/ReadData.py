@@ -13,7 +13,7 @@ def prepareDataset(path="~/BachelorsThesis/MAI/Utils/ReadData/Images"):
     all_image_paths = {}
     for i in range(1, 13):
         all_image_paths.update({os.path.basename(x): x for x in
-                                glob(os.path.join(path + f'/images_0{i}', '*'))})
+                                glob(path + f'/images_0{i}' + '/*.png')})
 
     print('Scans found:', len(all_image_paths), ', Total Headers', all_xray_df.shape[0])
     all_xray_df['path'] = all_xray_df['Image Index'].map(all_image_paths.get)

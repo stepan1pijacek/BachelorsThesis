@@ -54,11 +54,11 @@ class TrainingClass:
         lr_decay = callbacks.LearningRateScheduler(schedule=lambda epoch: 0.001 * (0.0001 ** epoch))
 
         # compile the model
-        model.compile(optimizer=tfa.optimizers.AdamW(learning_rate=params.trans_learning_rate,
-                                                     weight_decay=params.trans_weight_decay),
-                      loss=AsymetricLossOptimized,
-                      metrics=params.METRICS
-                      )
+        #model.compile(optimizer=tfa.optimizers.AdamW(learning_rate=params.trans_learning_rate,
+        #                                             weight_decay=params.trans_weight_decay),
+        #              loss=AsymetricLossOptimized,
+        #              metrics=params.METRICS
+        #              )
         model.compile(optimizer='SGD',
                       loss=AsymetricLossOptimized,
                       metrics=params.METRICS

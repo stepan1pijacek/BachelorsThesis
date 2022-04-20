@@ -16,9 +16,6 @@ def main():
     if not os.path.exists("Output"):
         os.makedirs("Output")
 
-    with open("%s/args.txt" % "Output", "w") as file:
-        file.write(json.dumps(vars("output_json")))
-
     # Train capsule network
     acc = train(training_function())
     with open("experiments/results.txt", 'a') as f:

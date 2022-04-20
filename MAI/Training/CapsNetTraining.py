@@ -52,8 +52,8 @@ def train(train_ds, test_ds, class_names):
     # Create a checkpoint directory to store the checkpoints.
     ckpt_dir = os.path.join("Output", "ckpt/", "ckpt")
 
-    train_writer = tf.summary.create_file_writer("%s/log/train" % "Output")
-    test_writer = tf.summary.create_file_writer("%s/log/test" % "Output")
+    train_writer = tf.summary.create_file_writer("%s/log/train" % "Output/")
+    test_writer = tf.summary.create_file_writer("%s/log/test" % "Output/")
 
     with strategy.scope():
         model = CapsNet()

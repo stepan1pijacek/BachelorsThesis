@@ -1,10 +1,34 @@
 import MAI.Model.ReCa.CapsuleNetwork as Caps
-import MAI.Training.train as train
+import MAI.Training.CapsNetTraining as train
+from MAI.Utils.CreateTrainingData import training_function
+import tensorflow as tf
+import os
+import json
 
 
 def main():
     model = Caps.CapsNet()
-    train.TrainingClass.training_function(model)
+    print("\n\n###############################################", flush=True)
+    print("Output", flush=True)
+    print("###############################################\n", flush=True)
+
+    # Configurations for cluster
+    physical_devices = tf.config.experimental.list_physical_devices('GPU')
+    assert len(physical_devices) > 0, "Not enough GPU hardware devices available"
+    for r in range(len(physical_devices)):
+        tf.config.experimental.set_memory_growth(physical_devices[r], True)
+
+    # Write log folder and arguments
+    if not os.path.exists("Output"):
+        os.makedirs("Output")
+
+    with open("%s/args.txt" % "Output", "w") as file:
+        file.write(json.dumps(vars("output_json")))
+
+    # Train capsule network
+    acc = train(training_function())
+    with open("experiments/results.txt", 'a') as f:
+        f.write("%s;%.5f\n" % ("Output", acc))
 
 
 if __name__ == '__main__':

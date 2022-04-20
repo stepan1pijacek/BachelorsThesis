@@ -13,6 +13,8 @@ MAKE_SKIPS = False
 NO_SKIPS = 2
 ROUTING = "rba"
 
+LEARNING_RATES = 0.001
+
 METRICS = [
     keras.metrics.TruePositives(name='tp'),
     keras.metrics.FalsePositives(name='fp'),

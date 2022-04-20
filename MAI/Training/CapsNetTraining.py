@@ -10,6 +10,12 @@ from MAI.Utils.Functions.MarginLoss import margin_loss
 import MAI.Utils.ConflictingBundles as cb
 from MAI.Utils.Params import LEARNING_RATES, IMG_SIZE
 
+# Configurations for cluster
+physical_devices = tf.config.experimental.list_physical_devices('GPU')
+assert len(physical_devices) > 0, "Not enough GPU hardware devices available"
+for r in range(len(physical_devices)):
+    tf.config.experimental.set_memory_growth(physical_devices[r], True)
+
 
 def compute_loss(logits, y, reconstruction, x):
     """ The loss is the sum of the margin loss and the reconstruction loss

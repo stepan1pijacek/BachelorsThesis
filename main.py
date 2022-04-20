@@ -16,8 +16,9 @@ def main():
     if not os.path.exists("Output"):
         os.makedirs("Output")
 
+    train_df, test_ds, class_name = training_function()
     # Train capsule network
-    acc = train(training_function())
+    acc = train.train(train_df, test_ds, class_name)
     with open("experiments/results.txt", 'a') as f:
         f.write("%s;%.5f\n" % ("Output", acc))
 

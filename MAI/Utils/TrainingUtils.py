@@ -2,11 +2,9 @@ import io
 import itertools
 
 import tensorflow as tf
-from tensorflow import keras
 
 import matplotlib.pyplot as plt
 import numpy as np
-import sklearn.metrics
 
 
 # Credit: https://www.tensorflow.org/tensorboard/image_summaries

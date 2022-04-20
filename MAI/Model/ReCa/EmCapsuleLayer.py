@@ -1,7 +1,6 @@
 import math
-import numpy as np
 import tensorflow as tf
-from tensorflow.keras import layers, models, Model
+from tensorflow.keras import Model
 
 
 class EMCapsule(Model):

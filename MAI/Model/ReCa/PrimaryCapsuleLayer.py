@@ -1,4 +1,3 @@
-import tensorflow as tf
 from tensorflow.python.keras import layers, Model
 from MAI.Utils.Functions.Squash import squash
 

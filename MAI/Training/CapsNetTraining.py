@@ -176,8 +176,6 @@ def train(train_ds, test_ds, class_names):
                 # Log test results (for replica 0 only for activation map and reconstruction)
                 test_acc = np.mean(test_acc)
                 max_acc = test_acc if test_acc > max_acc else max_acc
-                #figure = utils.plot_confusion_matrix(cm.numpy(), class_names)
-                #cm_image = utils.plot_to_image(figure)
                 print("TEST | epoch %d (%d): acc=%.4f, loss=%.4f" %
                       (epoch, step, test_acc, test_loss.result()), flush=True)
 

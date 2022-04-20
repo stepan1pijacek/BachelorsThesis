@@ -1,7 +1,4 @@
-import numpy as np
 import tensorflow as tf
-from tqdm import tqdm
-import math
 
 
 def bundle_entropy(model, train_ds, train_batch_size, train_lr,

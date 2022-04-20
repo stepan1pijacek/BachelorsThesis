@@ -46,7 +46,7 @@ class CapsNet(Model):
 
             size = 16 * 16 if (IMG_SIZE == 512) else \
                 28 * 28 if (IMG_SIZE == 1024) else \
-                    4 * 4
+                4 * 4
             for i in range(1, len(layers)):
                 self.capsule_layers.append(
                     CapsuleType[routing](
@@ -70,7 +70,7 @@ class CapsNet(Model):
             self.residual = ResLayer()
 
     # Inference
-    def call(self, x, y, **kwargs):
+    def call(self, y, x, **kwargs):
         self.cb = []
 
         x = self.reshape(x)
@@ -92,8 +92,8 @@ class CapsNet(Model):
                     x = self.residual(x, out_skip)
 
             layers.append(x)
-        r = self.reconstruction_network(
+        r = self.reconstruction_network.call(
             x, y) if self.use_reconstruction else None
-        out = self.norm(x)
+        out = self.norm.call(x)
 
         return out, r, layers

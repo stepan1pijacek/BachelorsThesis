@@ -1,6 +1,5 @@
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras import layers, models, Model
 
 from MAI.Utils.Functions.Squash import squash
 

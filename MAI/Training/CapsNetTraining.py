@@ -46,8 +46,8 @@ def train(train_ds, test_ds, class_names):
     strategy = tf.distribute.MirroredStrategy()
     num_replicas = strategy.num_replicas_in_sync
 
-    train_ds = strategy.experimental_distribute_dataset(train_ds)
-    test_ds = strategy.experimental_distribute_dataset(test_ds)
+    # train_ds = strategy.experimental_distribute_dataset(train_ds)
+    # test_ds = strategy.experimental_distribute_dataset(test_ds)
 
     # Create a checkpoint directory to store the checkpoints.
     ckpt_dir = os.path.join("Output", "ckpt/", "ckpt")

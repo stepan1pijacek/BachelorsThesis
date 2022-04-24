@@ -8,7 +8,7 @@ import pandas as pd
 
 def prepareDataset(path="Images/"):
 
-    all_xray_df = pd.read_csv('/Data_Entry_2017_v2020.csv', delim_whitespace=True)
+    all_xray_df = pd.read_csv('Data_Entry_2017_v2020.csv', delim_whitespace=True)
 
     all_image_paths = {}
     for i in range(1, 13):

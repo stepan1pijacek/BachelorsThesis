@@ -90,10 +90,10 @@ def train(train_ds, test_ds, class_names):
 
         # Define functions for distributed training
         def distributed_train_step(dataset_inputs):
-            return strategy.run(train_step, args=(dataset_inputs,))
+            return strategy.run(train_step, args=dataset_inputs)
 
         def distributed_test_step(dataset_inputs):
-            return strategy.run(test_step, args=(dataset_inputs, ))
+            return strategy.run(test_step, args=dataset_inputs)
 
         distributed_train_step = tf.function(distributed_train_step)
         # distributed_test_step = tf.function(distributed_test_step)

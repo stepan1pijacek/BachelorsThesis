@@ -63,9 +63,9 @@ def train(train_ds, test_ds, class_names):
 
         # Function for a single training step
         def train_step(inputs):
-            x, y = inputs
+            y, x = inputs
             with tf.GradientTape() as tape:
-                logits, reconstruction, layers = model(x, y)
+                logits, reconstruction, layers = model(y, x)
                 model.summary()
                 loss, _ = compute_loss(logits, y, reconstruction, x)
 
@@ -77,15 +77,15 @@ def train(train_ds, test_ds, class_names):
 
         # Function for a single test step
         def test_step(inputs):
-            x, y = inputs
-            logits, reconstruction, _ = model(x, y)
+            y, x = inputs
+            logits, reconstruction, _ = model(y, x)
             loss, _ = compute_loss(logits, y, reconstruction, x)
 
             test_loss.update_state(loss)
             acc = compute_accuracy(logits, y)
 
             pred = tf.math.argmax(logits, axis=1)
-            #cm = tf.math.confusion_matrix(y, pred, num_classes=10)
+            # cm = tf.math.confusion_matrix(y, pred, num_classes=10)
             return acc
 
         # Define functions for distributed training
@@ -96,7 +96,7 @@ def train(train_ds, test_ds, class_names):
             return strategy.run(test_step, args=(dataset_inputs, ))
 
         distributed_train_step = tf.function(distributed_train_step)
-        distributed_test_step = tf.function(distributed_test_step)
+        # distributed_test_step = tf.function(distributed_test_step)
 
         # Loop for multiple epochs
         conflicts_int = None

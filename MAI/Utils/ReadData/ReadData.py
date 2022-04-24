@@ -6,9 +6,9 @@ import numpy as np
 import pandas as pd
 
 
-def main(path="Images/"):
+def main(path="Images\\"):
 
-    all_xray_df = pd.read_csv('Data_Entry_2017_v2020.csv')
+    all_xray_df = pd.read_csv('MAI/Utils/ReadData/Data_Entry_2017_v2020.csv')
     print(all_xray_df.columns)
     all_image_paths = {}
     for i in range(1, 13):
@@ -30,12 +30,12 @@ def main(path="Images/"):
         if len(c_label) > 1:  # leave out empty labels
             all_xray_df[c_label] = all_xray_df['Finding Labels'].map(lambda finding: 1.0 if c_label in finding else 0)
 
-    with open("train_val_list.txt", 'r') as f:
+    with open("MAI/Utils/ReadData/test_list.txt", 'r') as f:
         lines = f.readlines()
         lines = list([line.rstrip('\n') for line in lines])
         train_val_df = all_xray_df[all_xray_df['ImageIndex'].isin(lines)]
 
-    with open("test_list.txt", 'r') as f:
+    with open("MAI/Utils/ReadData/test_list.txt", 'r') as f:
         lines = f.readlines()
         lines = list([line.rstrip('\n') for line in lines])
         test_df = all_xray_df[all_xray_df['ImageIndex'].isin(lines)]

@@ -5,14 +5,14 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.python.keras.utils.version_utils import callbacks
 
 import MAI.Utils.Params as params
-from MAI.Utils.ReadData.ReadData import prepareDataset
+from MAI.Utils.ReadData.ReadData import main
 from MAI.Utils.Functions.ASLFunction import AsymetricLossOptimized
 
 
 class TrainingClass:
     @staticmethod
     def training_function(model):
-        train_df, test_df, all_labels = prepareDataset()
+        train_df, test_df, all_labels = main()
         weight_path = "outputs/{}_weights.best.hdf5".format('xray_class')
         train_df['path'] = train_df['path'].astype(str)
         core_idg = ImageDataGenerator(
@@ -73,7 +73,6 @@ class TrainingClass:
             validation_steps=valid_gen.samples // 16,
             steps_per_epoch=200,
             validation_data=valid_gen,
-
             callbacks=[log, checkpoint, lr_decay]
         )
 

@@ -4,9 +4,9 @@ from MAI.Utils.Functions.Squash import squash
 
 class PrimaryCapsule(Model):
 
-    def __init__(self, channels=32, dim=8, kernel_size=(9, 9), strides=2, name=''):
+    def __init__(self, channels=42, dim=14, kernel_size=(14, 14), strides=2, name=''):
         super(PrimaryCapsule, self).__init__(name=name)
-        assert (channels % dim == 0) or (channels == 1), "Invalid size of channels and dim_capsule"
+        # assert (channels % dim == 0) or (channels == 1), "Invalid size of channels and dim_capsule"
 
         num_filters = channels * dim
         self.conv1 = layers.Conv2D(

@@ -12,6 +12,9 @@ from MAI.Utils.Params import DIMENSIONS, LAYERS, ROUTING, MAKE_SKIPS, NO_SKIPS, 
 
 
 class CapsNet(Model):
+    def get_config(self):
+        pass
+
     def __init__(self):
         super(CapsNet, self).__init__()
 
@@ -39,20 +42,19 @@ class CapsNet(Model):
             channels = layers[0]
             dim = dimensions[0]
             self.conv_1 = tf_layers.Conv2D(
-                channels * dim, (9, 9), kernel_initializer="he_normal", padding='valid', activation="relu")
+                channels * dim, (14, 14), kernel_initializer="he_normal", padding='valid', activation="relu")
             self.primary = PrimaryCapsule(
-                name="PrimaryCapsuleLayer", channels=channels, dim=dim, kernel_size=(9, 9))
+                name="PrimaryCapsuleLayer", channels=channels, dim=dim, kernel_size=(14, 14))
             self.capsule_layers = []
 
             size = 16 * 16 if (IMG_SIZE == 512) else \
                 28 * 28 if (IMG_SIZE == 1024) else \
-                4 * 4
+                    4 * 4
             for i in range(1, len(layers)):
                 self.capsule_layers.append(
                     CapsuleType[routing](
                         name="CapsuleLayer%d" % i,
-                        in_capsules=((size * channels) if i ==
-                                                          1 else layers[i - 1]),
+                        in_capsules=((size * channels) if i == 1 else layers[i - 1]),
                         in_dim=(dim if i == 1 else dimensions[i - 1]),
                         out_capsules=layers[i],
                         out_dim=dimensions[i],
@@ -70,9 +72,7 @@ class CapsNet(Model):
             self.residual = ResLayer()
 
     # Inference
-    def call(self, y, x, **kwargs):
-        self.cb = []
-
+    def call(self, x, y=None, mask=None):
         x = self.reshape(x)
         x = self.conv_1(x)
         x = self.primary(x)

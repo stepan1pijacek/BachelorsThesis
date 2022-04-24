@@ -4,6 +4,9 @@ from tensorflow.python.keras import layers, models, Model
 
 
 class Capsule(Model):
+    def get_config(self):
+        pass
+
     def __init__(self, in_capsules, in_dim, out_capsules, out_dim, stdev=0.2, routing_iterations=2, use_bias=True, name=''):
         super(Capsule, self).__init__(name=name)
         self.in_capsules = in_capsules
@@ -32,7 +35,8 @@ class Capsule(Model):
         u = tf.tile(u, [1, 1, 1, self.out_dim, 1])
 
         w = tf.tile(self.W, [batch_size, 1, 1, 1, 1])
-
+        print(u)
+        print(w)
         u_hat = tf.reduce_sum(u * w, axis=-1)
 
         bias = tf.tile(self.bias, [batch_size, 1, 1]) if self.use_bias else 0.0
@@ -49,4 +53,4 @@ class Capsule(Model):
                 u_x_v = tf.reduce_sum(v_j * u_hat, axis=-1)
                 b_ij = b_ij + tf.expand_dims(u_x_v, axis=-1)
 
-        return v_j
+            return v_j

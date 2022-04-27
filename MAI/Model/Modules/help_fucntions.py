@@ -1,7 +1,10 @@
 import tensorflow as tf
 
+from tensorflow.python.keras.layers import *
+
 import tensorflow.keras.backend as K
 from tensorflow.keras import initializers, layers
+
 
 class Length(layers.Layer):
     """
@@ -10,6 +13,7 @@ class Length(layers.Layer):
     inputs: shape=[None, num_vectors, dim_vector]
     output: shape=[None, num_vectors]
     """
+
     def call(self, inputs, **kwargs):
         return tf.sqrt(tf.reduce_sum(tf.square(inputs), -1) + K.epsilon())
 
@@ -35,6 +39,7 @@ class Mask(layers.Layer):
         out2 = Mask()([x, y])  # out2.shape=[8,6]. Masked with true labels y. Of course y can also be manipulated.
         ```
     """
+
     def call(self, inputs, **kwargs):
         if type(inputs) is list:  # true label is provided with shape = [None, n_classes], i.e. one-hot code.
             assert len(inputs) == 2
@@ -86,6 +91,7 @@ class CapsuleLayer(layers.Layer):
     :param dim_capsule: dimension of the output vectors of the capsules in this layer
     :param routings: number of iterations for the routing algorithm
     """
+
     def __init__(self, num_capsule, dim_capsule, routings=3,
                  kernel_initializer='glorot_uniform',
                  **kwargs):
@@ -94,9 +100,6 @@ class CapsuleLayer(layers.Layer):
         self.dim_capsule = dim_capsule
         self.routings = routings
         self.kernel_initializer = initializers.get(kernel_initializer)
-        self.input_num_capsule = [0]
-        self.input_dim_capsule = [0]
-        self.W = 0.0
 
     def build(self, input_shape):
         assert len(input_shape) >= 3, "The input Tensor should have shape=[None, input_num_capsule, input_dim_capsule]"
@@ -111,7 +114,7 @@ class CapsuleLayer(layers.Layer):
 
         self.built = True
 
-    def call(self, inputs, training=None):
+    def call(self, inputs, training=None, **kwargs):
         # inputs.shape=[None, input_num_capsule, input_dim_capsule]
         # inputs_expand.shape=[None, 1, input_num_capsule, input_dim_capsule, 1]
         inputs_expand = tf.expand_dims(tf.expand_dims(inputs, 1), -1)
@@ -126,7 +129,10 @@ class CapsuleLayer(layers.Layer):
         # Regard the first two dimensions as `batch` dimension, then
         # matmul(W, x): [..., dim_capsule, input_dim_capsule] x [..., input_dim_capsule, 1] -> [..., dim_capsule, 1].
         # inputs_hat.shape = [None, num_capsule, input_num_capsule, dim_capsule]
-        inputs_hat = tf.squeeze(tf.map_fn(lambda x: tf.matmul(self.W, x), elems=inputs_tiled))
+        try:
+            inputs_hat = tf.squeeze(tf.map_fn(lambda x: tf.matmul(self.W, x), elems=inputs_tiled))
+        except Exception as e:
+            print(str(e))
 
         # Begin: Routing algorithm ---------------------------------------------------------------------#
         # The prior for coupling coefficient, initialized as zeros.
@@ -177,8 +183,7 @@ def PrimaryCap(inputs, dim_capsule, n_channels, kernel_size, strides, padding):
     :param n_channels: the number of types of capsules
     :return: output tensor, shape=[None, num_capsule, dim_capsule]
     """
-    output = layers.Conv2D(filters=dim_capsule*n_channels, kernel_size=kernel_size, strides=strides, padding=padding,
+    output = layers.Conv2D(filters=dim_capsule * n_channels, kernel_size=kernel_size, strides=strides, padding=padding,
                            name='primarycap_conv2d')(inputs)
-    outputs = layers.Reshape(target_shape=[-1, dim_capsule], name='primarycap_reshape')(output)
+    outputs = layers.Reshape(target_shape=[1, dim_capsule], name='primarycap_reshape')(output)
     return layers.Lambda(squash, name='primarycap_squash')(outputs)
-

@@ -1,6 +1,4 @@
 from pickle import dump
-import tensorflow_addons as tfa
-import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.python.keras.utils.version_utils import callbacks
 

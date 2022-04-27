@@ -1,7 +1,5 @@
 import tensorflow as tf
 
-from tensorflow.python.keras.layers import *
-
 import tensorflow.keras.backend as K
 from tensorflow.keras import initializers, layers
 
@@ -153,7 +151,7 @@ class CapsuleLayer(layers.Layer):
                 b += tf.matmul(outputs, inputs_hat, transpose_b=True)
         # End: Routing algorithm -----------------------------------------------------------------------#
 
-        return tf.squeeze(outputs)
+            return tf.squeeze(outputs)
 
     def compute_output_shape(self, input_shape):
         return tuple([None, self.num_capsule, self.dim_capsule])

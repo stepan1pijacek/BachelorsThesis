@@ -47,7 +47,7 @@ def embedded_models():
 
     fusion = concatenate([module1_out, module2_out, module3_out])
 
-    primaryCaps = PrimaryCap(fusion, dim_capsule=2, n_channels=8, kernel_size=9, strides=2, padding='valid')
+    primaryCaps = PrimaryCap(fusion, dim_capsule=4, n_channels=8, kernel_size=9, strides=2, padding='valid')
     digitCaps = CapsuleLayer(num_capsule=14, dim_capsule=16, routings=2, name='digitcaps')(primaryCaps)
 
     out_caps = Length(name='capsnet')(digitCaps)

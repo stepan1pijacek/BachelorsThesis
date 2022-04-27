@@ -2,7 +2,7 @@ import MAI.Model.ReCa.CapsuleNetwork as Caps
 import MAI.Training.CapsNetTraining as train
 import MAI.Training.train as train_idk
 from MAI.Model.Modules.NewArchitecture import embedded_models
-from MAI.Utils.CreateTrainingData import training_function
+from MAI.Model.Modules.CapsNet import CapsNet
 import tensorflow as tf
 import os
 import json

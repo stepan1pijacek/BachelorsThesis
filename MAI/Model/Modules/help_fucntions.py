@@ -94,6 +94,9 @@ class CapsuleLayer(layers.Layer):
         self.dim_capsule = dim_capsule
         self.routings = routings
         self.kernel_initializer = initializers.get(kernel_initializer)
+        self.input_num_capsule = [0]
+        self.input_dim_capsule = [0]
+        self.W = 0.0
 
     def build(self, input_shape):
         assert len(input_shape) >= 3, "The input Tensor should have shape=[None, input_num_capsule, input_dim_capsule]"

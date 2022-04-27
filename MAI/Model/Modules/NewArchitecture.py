@@ -34,7 +34,7 @@ def module3(model):
 
 
 def embedded_models():
-    input = Input(shape=(IMG_SIZE, IMG_SIZE, 8))
+    input = Input(shape=(IMG_SIZE, IMG_SIZE, 4))
 
     model = Conv2D(64, 4, activation='relu', padding='same', kernel_initializer='he_normal')(input)
     model = Activation('relu')(model)
@@ -46,7 +46,7 @@ def embedded_models():
     module3_out = module3(model)
 
     fusion = concatenate([module1_out, module2_out, module3_out])
-
+    fusion = Reshape(target_shape=(IMG_SIZE, IMG_SIZE, 4), input_shape=fusion)
     primaryCaps = PrimaryCap(fusion, dim_capsule=4, n_channels=8, kernel_size=9, strides=2, padding='valid')
     digitCaps = CapsuleLayer(num_capsule=14, dim_capsule=16, routings=2, name='digitcaps')(primaryCaps)
 

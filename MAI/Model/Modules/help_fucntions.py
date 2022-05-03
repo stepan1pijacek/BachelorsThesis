@@ -135,7 +135,7 @@ class CapsuleLayer(layers.Layer):
         # The prior for coupling coefficient, initialized as zeros.
         # b.shape = [None, self.num_capsule, 1, self.input_num_capsule].
         # b = tf.zeros(shape=[0, 0, 0, 0])
-        b = tf.zeros(shape=[1, self.num_capsule, 1, self.input_num_capsule])
+        b = tf.zeros(shape=[None, self.num_capsule, 1, self.input_num_capsule])
 
         assert self.routings > 0, 'The routings should be > 0.'
         for i in range(self.routings):
@@ -183,5 +183,5 @@ def PrimaryCap(inputs, dim_capsule, n_channels, kernel_size, strides, padding):
     """
     output = layers.Conv2D(filters=dim_capsule * n_channels, kernel_size=kernel_size, strides=strides, padding=padding,
                            name='primarycap_conv2d')(inputs)
-    outputs = layers.Reshape(target_shape=[1, dim_capsule], name='primarycap_reshape')(output)
+    outputs = layers.Reshape(target_shape=[-1, dim_capsule], name='primarycap_reshape')(output)
     return layers.Lambda(squash, name='primarycap_squash')(outputs)

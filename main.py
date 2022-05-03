@@ -5,8 +5,7 @@ from MAI.Model.Modules.NewArchitecture import embedded_models
 
 
 def main():
-    model = embedded_models()
-    train_idk.TrainingClass.training_function(model)
+    train_idk.TrainingClass.training_function(embedded_models())
 
 
 if __name__ == '__main__':

@@ -10,6 +10,7 @@ from MAI.Utils.Functions.ASLFunction import AsymetricLossOptimized
 class TrainingClass:
     @staticmethod
     def training_function(model):
+        print("Training started \n")
         train_df, test_df, all_labels = main()
         weight_path = "outputs/{}_weights.best.hdf5".format('xray_class')
         train_df['path'] = train_df['path'].astype(str)

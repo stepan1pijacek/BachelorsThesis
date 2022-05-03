@@ -6,19 +6,7 @@ from MAI.Model.Modules.NewArchitecture import embedded_models
 
 def main():
     model = embedded_models()
-    print("\n\n###############################################", flush=True)
-    print("Output", flush=True)
-    print("###############################################\n", flush=True)
     train_idk.TrainingClass.training_function(model)
-    # Write log folder and arguments
-    # if not os.path.exists("Output"):
-    #    os.makedirs("Output")
-
-    # train_df, test_ds, class_name = training_function()
-    # Train capsule network
-    # acc = train.train(train_df, test_ds, class_name)
-    # with open("experiments/results.txt", 'a') as f:
-    #    f.write("%s;%.5f\n" % ("Output", acc))
 
 
 if __name__ == '__main__':

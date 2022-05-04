@@ -49,8 +49,9 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     module3_out = module3(model)
 
     fusion = concatenate([module1_out, module2_out, module3_out])
+    print(fusion)
     fusion = Flatten()(fusion)
-    print("After flattening \n" + fusion)
+    print(fusion)
     fusion = layers.Reshape(target_shape=input_shape, batch_size=batch_size)(fusion)
     print(fusion)
     conv1 = Conv2D(3, 1, strides=1, padding='same')(fusion)

@@ -49,11 +49,6 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     module3_out = module3(model)
 
     fusion = concatenate([module1_out, module2_out, module3_out])
-    print(fusion)
-    fusion = Flatten()(fusion)
-    print(fusion)
-    fusion = layers.Reshape(target_shape=input_shape, batch_size=batch_size)(fusion)
-    print(fusion)
     conv1 = Conv2D(3, 1, strides=1, padding='same')(fusion)
     primaryCaps = PrimaryCap(conv1, dim_capsule=2, n_channels=8, kernel_size=9, strides=2, padding='same')
     digitCaps = CapsuleLayer(num_capsule=n_class, dim_capsule=16, routings=routings, name='digitcaps')(primaryCaps)

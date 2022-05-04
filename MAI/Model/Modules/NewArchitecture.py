@@ -50,6 +50,7 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
 
     fusion = concatenate([module1_out, module2_out, module3_out])
     conv1 = Conv2D(3, 1, strides=1, padding='same')(fusion)
+    print(conv1)
     primaryCaps = PrimaryCap(conv1, dim_capsule=2, n_channels=8, kernel_size=9, strides=2, padding='same')
     digitCaps = CapsuleLayer(num_capsule=n_class, dim_capsule=16, routings=routings, name='digitcaps')(primaryCaps)
 

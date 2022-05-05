@@ -116,15 +116,11 @@ class CapsuleLayer(layers.Layer):
     def call(self, inputs, training=None, **kwargs):
         # inputs.shape=[None, input_num_capsule, input_dim_capsule]
         # inputs_expand.shape=[None, 1, input_num_capsule, input_dim_capsule, 1]
-        inputs_expand = tf.expand_dims(tf.expand_dims(inputs, 1), -1)
+        inputs_expand = tf.expand_dims(tf.expand_dims(inputs, 1), -1, name='in_expand')
 
         # Replicate num_capsule dimension to prepare being multiplied by W
         # inputs_tiled.shape=[None, num_capsule, input_num_capsule, input_dim_capsule, 1]
-        inputs_tiled = tf.tile(inputs_expand, [1,
-                                               self.num_capsule,
-                                               self.input_num_capsule,
-                                               self.input_dim_capsule,
-                                               1])
+        inputs_tiled = tf.tile(inputs_expand, [1, self.num_capsule, 1, 1, 1], name='in_tiled')
 
         # Compute `inputs * W` by scanning inputs_tiled on dimension 0.
         # W.shape=[num_capsule, input_num_capsule, dim_capsule, input_dim_capsule]
@@ -132,11 +128,9 @@ class CapsuleLayer(layers.Layer):
         # Regard the first two dimensions as `batch` dimension, then
         # matmul(W, x): [..., dim_capsule, input_dim_capsule] x [..., input_dim_capsule, 1] -> [..., dim_capsule, 1].
         # inputs_hat.shape = [None, num_capsule, input_num_capsule, dim_capsule]
-        print(inputs_tiled)
-        print(inputs_expand)
         print(self.W)
-
-        # flatten_w = Flatten()(self.W)
+        print(inputs_expand)
+        print(inputs_tiled)
         inputs_hat = tf.squeeze(tf.map_fn(lambda x: tf.matmul(self.W, x), elems=inputs_tiled))
 
         # Begin: Routing algorithm ---------------------------------------------------------------------#

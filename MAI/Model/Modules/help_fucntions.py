@@ -136,7 +136,7 @@ class CapsuleLayer(layers.Layer):
         print(inputs_expand)
         print(self.W)
 
-        flatten_w = Flatten()(self.W)
+        # flatten_w = Flatten()(self.W)
         inputs_hat = tf.squeeze(tf.map_fn(lambda x: tf.matmul(flatten_w, x), elems=inputs_tiled))
 
         # Begin: Routing algorithm ---------------------------------------------------------------------#

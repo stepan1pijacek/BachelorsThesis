@@ -1,7 +1,5 @@
 import tensorflow as tf
 
-from tensorflow.python.keras.layers import *
-
 import tensorflow.keras.backend as K
 from tensorflow.keras import initializers, layers
 
@@ -121,7 +119,11 @@ class CapsuleLayer(layers.Layer):
 
         # Replicate num_capsule dimension to prepare being multiplied by W
         # inputs_tiled.shape=[None, num_capsule, input_num_capsule, input_dim_capsule, 1]
-        inputs_tiled = tf.tile(inputs_expand, [1, self.num_capsule, 1, 1, 1])
+        inputs_tiled = tf.tile(inputs_expand, [1,
+                                               self.num_capsule,
+                                               self.input_num_capsule,
+                                               self.input_dim_capsule,
+                                               1])
 
         # Compute `inputs * W` by scanning inputs_tiled on dimension 0.
         # W.shape=[num_capsule, input_num_capsule, dim_capsule, input_dim_capsule]

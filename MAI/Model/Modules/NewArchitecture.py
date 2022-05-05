@@ -10,33 +10,34 @@ from MAI.Utils.Params import IMG_SIZE
 
 
 def module1(model):
-    efficient_net = EfficientNetB4(include_top=False)(model)
-    efficient_net = GlobalMaxPooling2D()(efficient_net)
-    efficient_net = Dense(128)(efficient_net)
-    efficient_net = Dropout(0.5)(efficient_net)
-    return Dense(64)(efficient_net)
+    efficient_net = ResNet50V2(include_top=False)(model)
+    # efficient_net = GlobalMaxPooling2D()(efficient_net)
+    # efficient_net = Dense(128)(efficient_net)
+    # efficient_net = Dropout(0.5)(efficient_net)
+    # vracet spis hodnoty z efficient_net ne Dense net to same u dalsich modulu
+    return efficient_net
 
 
 def module2(model):
-    inception_net = InceptionResNetV2(include_top=False)(model)
-    inception_net = GlobalMaxPooling2D()(inception_net)
-    inception_net = Dense(128)(inception_net)
-    inception_net = Dropout(0.5)(inception_net)
-    return Dense(64)(inception_net)
+    inception_net = ResNet50V2(include_top=False)(model)
+    # inception_net = GlobalMaxPooling2D()(inception_net)
+    # inception_net = Dense(128)(inception_net)
+    # inception_net = Dropout(0.5)(inception_net)
+    return inception_net
 
 
 def module3(model):
     res_net = ResNet50V2(include_top=False)(model)
-    res_net = GlobalMaxPooling2D()(res_net)
-    res_net = Dense(128)(res_net)
-    res_net = Dropout(0.5)(res_net)
-    return Dense(64)(res_net)
+    # res_net = GlobalMaxPooling2D()(res_net)
+    # res_net = Dense(128)(res_net)
+    # res_net = Dropout(0.5)(res_net)
+    return res_net
 
 
 def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
-            n_class=14,
-            routings=2,
-            batch_size=4):
+                    n_class=14,
+                    routings=2,
+                    batch_size=4):
     input = Input(shape=input_shape)
 
     model = Conv2D(64, 3, activation='relu', padding='same', kernel_initializer='he_normal')(input)
@@ -50,12 +51,12 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
 
     fusion = concatenate([module1_out, module2_out, module3_out])
     print(fusion)
-    fusion = Flatten()(fusion)
-    print(fusion)
-    fusion = layers.Reshape(target_shape=input_shape, batch_size=batch_size)(fusion)
-    print(fusion)
-    # conv1 = Conv2D(3, 1, strides=1, padding='same')(fusion)
-    primaryCaps = PrimaryCap(fusion, dim_capsule=2, n_channels=8, kernel_size=9, strides=2, padding='same')
+    # fusion = Flatten()(fusion)
+    # print(fusion)
+    # fusion = layers.Reshape(target_shape=input_shape, batch_size=batch_size)(fusion)
+    # print(fusion)
+    conv1 = Conv2D(3, 1, strides=1, padding='same')(fusion)
+    primaryCaps = PrimaryCap(conv1, dim_capsule=2, n_channels=8, kernel_size=9, strides=2, padding='same')
     digitCaps = CapsuleLayer(num_capsule=n_class, dim_capsule=16, routings=routings, name='digitcaps')(primaryCaps)
 
     out_caps = Length(name='capsnet')(digitCaps)

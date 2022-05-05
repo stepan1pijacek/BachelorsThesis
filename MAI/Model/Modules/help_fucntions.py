@@ -128,9 +128,9 @@ class CapsuleLayer(layers.Layer):
         # Regard the first two dimensions as `batch` dimension, then
         # matmul(W, x): [..., dim_capsule, input_dim_capsule] x [..., input_dim_capsule, 1] -> [..., dim_capsule, 1].
         # inputs_hat.shape = [None, num_capsule, input_num_capsule, dim_capsule]
-        print(self.W)
-        print(inputs_expand)
-        print(inputs_tiled)
+        # mprint(self.W)
+        # print(inputs_expand)
+        # print(inputs_tiled)
         inputs_hat = tf.squeeze(tf.map_fn(lambda x: tf.matmul(self.W, x), elems=inputs_tiled))
 
         # Begin: Routing algorithm ---------------------------------------------------------------------#

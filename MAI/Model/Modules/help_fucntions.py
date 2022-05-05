@@ -1,5 +1,6 @@
 import tensorflow as tf
 
+from tensorflow.python.keras.layers import *
 import tensorflow.keras.backend as K
 from tensorflow.keras import initializers, layers
 
@@ -134,7 +135,9 @@ class CapsuleLayer(layers.Layer):
         print(inputs_tiled)
         print(inputs_expand)
         print(self.W)
-        inputs_hat = tf.squeeze(tf.map_fn(lambda x: tf.matmul(self.W, x), elems=inputs_tiled))
+
+        flatten_w = Flatten()(self.W)
+        inputs_hat = tf.squeeze(tf.map_fn(lambda x: tf.matmul(flatten_w, x), elems=inputs_tiled))
 
         # Begin: Routing algorithm ---------------------------------------------------------------------#
         # The prior for coupling coefficient, initialized as zeros.

@@ -116,11 +116,13 @@ class CapsuleLayer(layers.Layer):
     def call(self, inputs, training=None, **kwargs):
         # inputs.shape=[None, input_num_capsule, input_dim_capsule]
         # inputs_expand.shape=[None, 1, input_num_capsule, input_dim_capsule, 1]
-        inputs_expand = tf.expand_dims(tf.expand_dims(inputs, 1), -1, name='in_expand')
+        # inputs_expand = tf.expand_dims(tf.expand_dims(inputs, 1), -1, name='in_expand')
+        input_expand = tf.expand_dims(tf.expand_dims(inputs, 1), -1)
 
         # Replicate num_capsule dimension to prepare being multiplied by W
         # inputs_tiled.shape=[None, num_capsule, input_num_capsule, input_dim_capsule, 1]
-        inputs_tiled = tf.tile(inputs_expand, [1, self.num_capsule, 1, 1, 1], name='in_tiled')
+        # inputs_tiled = tf.tile(inputs_expand, [1, self.num_capsule, 1, 1, 1], name='in_tiled')
+        inputs_tiled = K.tile(input_expand, [1, self.num_capsule, 1, 1, 1])
 
         # Compute `inputs * W` by scanning inputs_tiled on dimension 0.
         # W.shape=[num_capsule, input_num_capsule, dim_capsule, input_dim_capsule]
@@ -131,8 +133,9 @@ class CapsuleLayer(layers.Layer):
         # mprint(self.W)
         # print(inputs_expand)
         # print(inputs_tiled)
-        inputs_hat = tf.squeeze(tf.map_fn(lambda x: tf.matmul(self.W, x), elems=inputs_tiled))
-        print(tf.shape(inputs_hat))
+        # inputs_hat = tf.squeeze(tf.map_fn(lambda x: tf.matmul(self.W, x), elems=inputs_tiled))
+        input_hat = tf.squeeze(tf.map_fn(lambda x: tf.matmul(self.W, x), elems=inputs_tiled))
+        print(tf.shape(input_hat))
         # Begin: Routing algorithm ---------------------------------------------------------------------#
         # The prior for coupling coefficient, initialized as zeros.
         # b.shape = [None, self.num_capsule, 1, self.input_num_capsule].
@@ -150,7 +153,9 @@ class CapsuleLayer(layers.Layer):
             # The first two dimensions as `batch` dimension,
             # then matmal: [..., 1, input_num_capsule] x [..., input_num_capsule, dim_capsule] -> [..., 1, dim_capsule].
             # outputs.shape=[None, num_capsule, 1, dim_capsule]
-            outputs = squash(tf.matmul(c, inputs_hat))  # [None, 10, 1, 16]
+            outputs = squash(tf.matmul(c, input_hat))  # [None, 10, 1, 16]
+            print("Printing squash output \n")
+            print(outputs)
 
             if i < self.routings - 1:
                 # outputs.shape =  [None, num_capsule, 1, dim_capsule]
@@ -158,7 +163,7 @@ class CapsuleLayer(layers.Layer):
                 # The first two dimensions as `batch` dimension, then
                 # matmal:[..., 1, dim_capsule] x [..., input_num_capsule, dim_capsule]^T -> [..., 1, input_num_capsule].
                 # b.shape=[batch_size, num_capsule, 1, input_num_capsule]
-                b += tf.matmul(outputs, inputs_hat, transpose_b=True)
+                b += tf.matmul(outputs, input_hat, transpose_b=True)
                 print("b.shape \n")
                 print(b)
         # End: Routing algorithm -----------------------------------------------------------------------#

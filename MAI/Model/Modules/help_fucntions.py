@@ -158,6 +158,8 @@ class CapsuleLayer(layers.Layer):
                 # matmal:[..., 1, dim_capsule] x [..., input_num_capsule, dim_capsule]^T -> [..., 1, input_num_capsule].
                 # b.shape=[batch_size, num_capsule, 1, input_num_capsule]
                 b += tf.matmul(outputs, inputs_hat, transpose_b=True)
+                print("b.shape \n")
+                print(tf.shape(b))
         # End: Routing algorithm -----------------------------------------------------------------------#
 
             return tf.squeeze(outputs)

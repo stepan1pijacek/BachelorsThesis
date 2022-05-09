@@ -132,12 +132,13 @@ class CapsuleLayer(layers.Layer):
         # print(inputs_expand)
         # print(inputs_tiled)
         inputs_hat = tf.squeeze(tf.map_fn(lambda x: tf.matmul(self.W, x), elems=inputs_tiled))
-
+        print(inputs_hat)
         # Begin: Routing algorithm ---------------------------------------------------------------------#
         # The prior for coupling coefficient, initialized as zeros.
         # b.shape = [None, self.num_capsule, 1, self.input_num_capsule].
         # https://datascience.stackexchange.com/questions/90636/typeerror-expected-int32-got-none-of-type-nonetype-instead
         b = tf.zeros(shape=[tf.shape(inputs)[0], self.num_capsule, 1, self.input_num_capsule])
+        print(b)
 
         assert self.routings > 0, 'The routings should be > 0.'
         for i in range(self.routings):

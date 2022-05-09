@@ -155,7 +155,7 @@ class CapsuleLayer(layers.Layer):
             # outputs.shape=[None, num_capsule, 1, dim_capsule]
             outputs = squash(tf.matmul(c, input_hat))  # [None, 10, 1, 16]
             print("Printing squash output \n")
-            print(outputs)
+            print(tf.shape(outputs))
 
             if i < self.routings - 1:
                 # outputs.shape =  [None, num_capsule, 1, dim_capsule]
@@ -165,7 +165,7 @@ class CapsuleLayer(layers.Layer):
                 # b.shape=[batch_size, num_capsule, 1, input_num_capsule]
                 b += tf.matmul(outputs, input_hat, transpose_b=True)
                 print("b.shape \n")
-                print(b)
+                print(tf.shape(b))
         # End: Routing algorithm -----------------------------------------------------------------------#
 
             return tf.squeeze(outputs)

@@ -62,9 +62,9 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     primaryCaps = PrimaryCap(fusion, dim_capsule=2, n_channels=8, kernel_size=9, strides=2, padding='same')
     digitCaps = CapsuleLayer(num_capsule=n_class, dim_capsule=16, routings=routings, name='digitcaps')(primaryCaps)
 
-    print(tf.shape(digitCaps, name="digit_caps_shape"))
+    print(digitCaps)
     out_caps = Length(name='capsnet')(digitCaps)
-    print(tf.shape(out_caps, name="out_caps_shape"))
+    print(out_caps)
     out_caps = Dense(14, activation="sigmoid")(out_caps)
     train_Model = models.Model(input, out_caps)
 

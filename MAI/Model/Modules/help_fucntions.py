@@ -159,7 +159,7 @@ class CapsuleLayer(layers.Layer):
                 # b.shape=[batch_size, num_capsule, 1, input_num_capsule]
                 b += tf.matmul(outputs, inputs_hat, transpose_b=True)
                 print("b.shape \n")
-                print(tf.shape(b))
+                print(b)
         # End: Routing algorithm -----------------------------------------------------------------------#
 
             return tf.squeeze(outputs)

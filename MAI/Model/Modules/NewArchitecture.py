@@ -60,7 +60,7 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     digitCaps = CapsuleLayer(num_capsule=n_class, dim_capsule=16, routings=routings, name='digitcaps')(primaryCaps)
 
     out_caps = Length(name='capsnet')(digitCaps)
-    out_caps = Dense(14, activation="relu")(out_caps)
+    out_caps = Dense(14, activation="sigmoid")(out_caps)
     train_Model = models.Model(input, out_caps)
 
     return train_Model

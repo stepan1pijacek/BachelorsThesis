@@ -56,7 +56,7 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     # print(fusion)
     # fusion = layers.Reshape(target_shape=input_shape, batch_size=batch_size)(fusion)
     #
-    print(tf.shape(fusion, name="fusion_shape"))
+    print(fusion)
     # conv1 = EfficientNetB4(include_top=False)(fusion)
     # print(tf.shape(conv1, name="conv1"))
     primaryCaps = PrimaryCap(fusion, dim_capsule=2, n_channels=8, kernel_size=9, strides=2, padding='same')

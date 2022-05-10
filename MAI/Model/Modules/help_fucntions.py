@@ -148,7 +148,7 @@ class CapsuleLayer(layers.Layer):
             # c.shape=[batch_size, num_capsule, 1, input_num_capsule]
             c = tf.nn.softmax(b, axis=-1)
             print("\n printing C")
-            print(c)
+            print(tf.shape(c))
             # c.shape = [batch_size, num_capsule, 1, input_num_capsule]
             # inputs_hat.shape=[None, num_capsule, input_num_capsule, dim_capsule]
             # The first two dimensions as `batch` dimension,

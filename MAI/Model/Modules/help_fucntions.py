@@ -5,6 +5,7 @@ from tensorflow.python.keras.layers import *
 import tensorflow.keras.backend as K
 from tensorflow.keras import initializers, layers
 
+
 class Length(layers.Layer):
     """
     Compute the length of vectors. This is used to compute a Tensor that has the same shape with y_true in margin_loss.
@@ -12,6 +13,7 @@ class Length(layers.Layer):
     inputs: shape=[None, num_vectors, dim_vector]
     output: shape=[None, num_vectors]
     """
+
     def call(self, inputs, **kwargs):
         return tf.sqrt(tf.reduce_sum(tf.square(inputs), -1) + K.epsilon())
 
@@ -37,6 +39,7 @@ class Mask(layers.Layer):
         out2 = Mask()([x, y])  # out2.shape=[8,6]. Masked with true labels y. Of course y can also be manipulated.
         ```
     """
+
     def call(self, inputs, **kwargs):
         if type(inputs) is list:  # true label is provided with shape = [None, n_classes], i.e. one-hot code.
             assert len(inputs) == 2
@@ -88,6 +91,7 @@ class CapsuleLayer(layers.Layer):
     :param dim_capsule: dimension of the output vectors of the capsules in this layer
     :param routings: number of iterations for the routing algorithm
     """
+
     def __init__(self, num_capsule, dim_capsule, routings=3,
                  kernel_initializer='glorot_uniform',
                  **kwargs):
@@ -130,12 +134,13 @@ class CapsuleLayer(layers.Layer):
         # Begin: Routing algorithm ---------------------------------------------------------------------#
         # The prior for coupling coefficient, initialized as zeros.
         # b.shape = [None, self.num_capsule, 1, self.input_num_capsule].
-        b = tf.zeros(shape=[tf.shape(inputs)[0], self.num_capsule, 1, self.input_num_capsule])
+        b = tf.zeros(shape=[inputs.shape[0], self.num_capsule, 1, self.input_num_capsule])
 
         assert self.routings > 0, 'The routings should be > 0.'
         for i in range(self.routings):
             # c.shape=[batch_size, num_capsule, 1, input_num_capsule]
-            c = tf.transpose(tf.nn.softmax(tf.transpose(b,perm=[0,2,3,1])),perm=[0,3,1,2])
+            # c = tf.transpose(tf.nn.softmax(tf.transpose(b, perm=[0, 2, 3, 1])), perm=[0, 3, 1, 2])
+            c = tf.nn.softmax(b, axis=1)
 
             # c.shape = [batch_size, num_capsule, 1, input_num_capsule]
             # inputs_hat.shape=[None, num_capsule, input_num_capsule, dim_capsule]
@@ -176,8 +181,7 @@ def PrimaryCap(inputs, dim_capsule, n_channels, kernel_size, strides, padding):
     :param n_channels: the number of types of capsules
     :return: output tensor, shape=[None, num_capsule, dim_capsule]
     """
-    output = layers.Conv2D(filters=dim_capsule*n_channels, kernel_size=kernel_size, strides=strides, padding=padding,
+    output = layers.Conv2D(filters=dim_capsule * n_channels, kernel_size=kernel_size, strides=strides, padding=padding,
                            name='primarycap_conv2d')(inputs)
     outputs = layers.Reshape(target_shape=[-1, dim_capsule], name='primarycap_reshape')(output)
     return layers.Lambda(squash, name='primarycap_squash')(outputs)
-

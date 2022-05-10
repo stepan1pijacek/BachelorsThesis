@@ -56,15 +56,18 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     # print(fusion)
     # fusion = layers.Reshape(target_shape=input_shape, batch_size=batch_size)(fusion)
     #
-    print(fusion)
+    input_caps_net = Input(shape=fusion, batch_size=4)
+    print("printing capsnet input \n")
+    print(input_caps_net)
+    print("\n")
     # conv1 = EfficientNetB4(include_top=False)(fusion)
     # print(tf.shape(conv1, name="conv1"))
-    primaryCaps = PrimaryCap(fusion, dim_capsule=2, n_channels=8, kernel_size=9, strides=2, padding='same')
+    primaryCaps = PrimaryCap(input_caps_net, dim_capsule=2, n_channels=8, kernel_size=9, strides=2, padding='same')
     digitCaps = CapsuleLayer(num_capsule=n_class, dim_capsule=16, routings=routings, name='digitcaps')(primaryCaps)
 
-    print(digitCaps)
+    print(tf.shape(digitCaps))
     out_caps = Length(name='capsnet')(digitCaps)
-    print(out_caps)
+    print(tf.shape(out_caps))
     out_caps = Dense(14, activation="sigmoid")(out_caps)
     train_Model = models.Model(input, out_caps)
 

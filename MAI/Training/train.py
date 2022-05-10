@@ -12,7 +12,7 @@ class TrainingClass:
     def training_function(model):
         print("Training started \n")
         train_df, test_df, all_labels = main()
-        weight_path = "outputs/{}_weights.best.hdf5".format('xray_class')
+        weight_path = "Output/{}_weights.best.hdf5".format('xray_class')
         train_df['path'] = train_df['path'].astype(str)
         core_idg = ImageDataGenerator(
             horizontal_flip=True,
@@ -47,7 +47,7 @@ class TrainingClass:
                                                  batch_size=8,
                                                  subset='validation')
 
-        log = callbacks.CSVLogger('outputs/log.csv')
+        log = callbacks.CSVLogger('Output/log.csv')
         checkpoint = callbacks.ModelCheckpoint(weight_path, monitor='val_auc', mode='max',
                                                save_best_only=True, save_weights_only=True, verbose=1)
         lr_decay = callbacks.LearningRateScheduler(schedule=lambda epoch: 0.001 * (0.0001 ** epoch))
@@ -75,8 +75,8 @@ class TrainingClass:
             callbacks=[log, checkpoint, lr_decay]
         )
 
-        with open(f'outputs/history.txt',
+        with open(f'Output/history.txt',
                   'wb') as handle:  # saving the history of the model trained for another 50 Epochs
             dump(history.history, handle)
 
-        model.save_weights("outputs/{}_weights.last.hdf5".format('xray_class'))
+        model.save_weights("Output/{}_weights.last.hdf5".format('xray_class'))

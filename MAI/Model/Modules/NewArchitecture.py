@@ -39,7 +39,7 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
                     n_class=14,
                     routings=2,
                     batch_size=4):
-    input = Input(shape=input_shape)
+    input = Input(shape=input_shape, batch_size=batch_size)
 
     model = Conv2D(64, 3, activation='relu', padding='same', kernel_initializer='he_normal')(input)
     model = Activation('relu')(model)
@@ -53,16 +53,15 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     fusion = concatenate([module1_out, module2_out, module3_out])
     # print(fusion)
     # fusion = Flatten()(fusion)
+    # matmulexp = tf.matmul(fusion, [batch_size, 0, 0, 0])
+    softmax_out = tf.nn.softmax(fusion, axis=1)
     print(fusion)
-    input_caps_net = layers.Input(target_shape=fusion, batch_size=batch_size)(fusion)
+    # input_caps_net = layers.Input(shape=softmax_out, batch_size=batch_size)
     #
     # input_caps_net = Input(shape=fusion, batch_size=4)
-    print("printing capsnet input \n")
-    print(input_caps_net)
-    print("\n")
     # conv1 = EfficientNetB4(include_top=False)(fusion)
     # print(tf.shape(conv1, name="conv1"))
-    primaryCaps = PrimaryCap(input_caps_net, dim_capsule=2, n_channels=8, kernel_size=9, strides=2, padding='same')
+    primaryCaps = PrimaryCap(fusion, dim_capsule=2, n_channels=8, kernel_size=9, strides=2, padding='same')
     digitCaps = CapsuleLayer(num_capsule=n_class, dim_capsule=16, routings=routings, name='digitcaps')(primaryCaps)
 
     print(tf.shape(digitCaps))

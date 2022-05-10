@@ -54,9 +54,9 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     # print(fusion)
     # fusion = Flatten()(fusion)
     # print(fusion)
-    # fusion = layers.Reshape(target_shape=input_shape, batch_size=batch_size)(fusion)
+    input_caps_net = layers.Reshape(target_shape=input_shape, batch_size=batch_size)(fusion)
     #
-    input_caps_net = Input(shape=fusion, batch_size=4)
+    # input_caps_net = Input(shape=fusion, batch_size=4)
     print("printing capsnet input \n")
     print(input_caps_net)
     print("\n")

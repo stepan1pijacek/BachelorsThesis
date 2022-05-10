@@ -146,18 +146,14 @@ class CapsuleLayer(layers.Layer):
         assert self.routings > 0, 'The routings should be > 0.'
         for i in range(self.routings):
             # c.shape=[batch_size, num_capsule, 1, input_num_capsule]
-            # TODO Here is the mistake, output of softmax is incorrect
             c = tf.nn.softmax(b, axis=1)
-            print("\nPrinting C \n")
-            print(c)
+
             # c.shape = [batch_size, num_capsule, 1, input_num_capsule]
             # inputs_hat.shape=[None, num_capsule, input_num_capsule, dim_capsule]
             # The first two dimensions as `batch` dimension,
             # then matmal: [..., 1, input_num_capsule] x [..., input_num_capsule, dim_capsule] -> [..., 1, dim_capsule].
             # outputs.shape=[None, num_capsule, 1, dim_capsule]
             outputs = squash(tf.matmul(c, input_hat))  # [None, 10, 1, 16]
-            print("Printing squash output \n")
-            print(tf.shape(outputs))
 
             if i < self.routings - 1:
                 # outputs.shape =  [None, num_capsule, 1, dim_capsule]
@@ -166,8 +162,6 @@ class CapsuleLayer(layers.Layer):
                 # matmal:[..., 1, dim_capsule] x [..., input_num_capsule, dim_capsule]^T -> [..., 1, input_num_capsule].
                 # b.shape=[batch_size, num_capsule, 1, input_num_capsule]
                 b += tf.matmul(outputs, input_hat, transpose_b=True)
-                print("b.shape \n")
-                print(b)
         # End: Routing algorithm -----------------------------------------------------------------------#
 
         return tf.squeeze(outputs)

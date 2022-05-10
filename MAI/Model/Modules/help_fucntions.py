@@ -155,7 +155,8 @@ class CapsuleLayer(layers.Layer):
             # then matmal: [..., 1, input_num_capsule] x [..., input_num_capsule, dim_capsule] -> [..., 1, dim_capsule].
             # outputs.shape=[None, num_capsule, 1, dim_capsule]
             outputs = squash(tf.matmul(c, input_hat))  # [None, 10, 1, 16]
-
+            print("printing outputs from the for loop")
+            print(outputs)
             if i < self.routings - 1:
                 # outputs.shape =  [None, num_capsule, 1, dim_capsule]
                 # inputs_hat.shape=[None, num_capsule, input_num_capsule, dim_capsule]
@@ -163,6 +164,8 @@ class CapsuleLayer(layers.Layer):
                 # matmal:[..., 1, dim_capsule] x [..., input_num_capsule, dim_capsule]^T -> [..., 1, input_num_capsule].
                 # b.shape=[batch_size, num_capsule, 1, input_num_capsule]
                 b += tf.matmul(outputs, input_hat, transpose_b=True)
+                print("printing outputs from the for loop")
+                print(b)
         # End: Routing algorithm -----------------------------------------------------------------------#
         print("Pritning outputs: \n")
         print(tf.shape(outputs))

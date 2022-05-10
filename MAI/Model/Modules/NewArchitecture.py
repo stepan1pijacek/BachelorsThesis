@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow.keras import layers, models
 from tensorflow.python.keras.applications.efficientnet import EfficientNetB4
 from tensorflow.python.keras.applications.inception_resnet_v2 import InceptionResNetV2
-from tensorflow.python.keras.applications.resnet_v2 import ResNet50V2
+from tensorflow.python.keras.applications.resnet_v2 import ResNet50V2, ResNet101V2, ResNet152V2
 from tensorflow.python.keras.layers import *
 from tensorflow.python.keras.layers import Dense, GlobalMaxPooling2D, Dropout
 
@@ -20,7 +20,7 @@ def module1(model):
 
 
 def module2(model):
-    inception_net = EfficientNetB4(include_top=False)(model)
+    inception_net = ResNet101V2(include_top=False)(model)
     # inception_net = GlobalMaxPooling2D()(inception_net)
     # inception_net = Dense(128)(inception_net)
     # inception_net = Dropout(0.5)(inception_net)
@@ -28,7 +28,7 @@ def module2(model):
 
 
 def module3(model):
-    res_net = InceptionResNetV2(include_top=False)(model)
+    res_net = ResNet152V2(include_top=False)(model)
     # res_net = GlobalMaxPooling2D()(res_net)
     # res_net = Dense(128)(res_net)
     # res_net = Dropout(0.5)(res_net)
@@ -47,14 +47,10 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     model = Conv2D(3, 1, strides=1, padding='same')(model)
 
     module1_out = module1(model)
-    module2_out = module1(model)
-    module3_out = module1(model)
+    module2_out = module2(model)
+    module3_out = module3(model)
 
     fusion = concatenate([module1_out, module2_out, module3_out])
-    # print(fusion)
-    # fusion = Flatten()(fusion)
-    # matmulexp = tf.matmul(fusion, [batch_size, 0, 0, 0])
-    softmax_out = tf.nn.softmax(fusion, axis=1)
     print(fusion)
     # input_caps_net = layers.Input(shape=softmax_out, batch_size=batch_size)
     #

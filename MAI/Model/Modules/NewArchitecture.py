@@ -20,7 +20,7 @@ def module1(model):
 
 
 def module2(model):
-    inception_net = ResNet50V2(include_top=False)(model)
+    inception_net = EfficientNetB4(include_top=False)(model)
     # inception_net = GlobalMaxPooling2D()(inception_net)
     # inception_net = Dense(128)(inception_net)
     # inception_net = Dropout(0.5)(inception_net)
@@ -28,7 +28,7 @@ def module2(model):
 
 
 def module3(model):
-    res_net = ResNet50V2(include_top=False)(model)
+    res_net = InceptionResNetV2(include_top=False)(model)
     # res_net = GlobalMaxPooling2D()(res_net)
     # res_net = Dense(128)(res_net)
     # res_net = Dropout(0.5)(res_net)
@@ -47,8 +47,8 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     model = Conv2D(3, 1, strides=1, padding='same')(model)
 
     module1_out = module1(model)
-    module2_out = module2(model)
-    module3_out = module3(model)
+    module2_out = module1(model)
+    module3_out = module1(model)
 
     fusion = concatenate([module1_out, module2_out, module3_out])
     # print(fusion)

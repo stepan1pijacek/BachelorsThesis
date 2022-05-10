@@ -165,7 +165,7 @@ class CapsuleLayer(layers.Layer):
                 b += tf.matmul(outputs, input_hat, transpose_b=True)
         # End: Routing algorithm -----------------------------------------------------------------------#
         print("Pritning outputs: \n")
-        print(outputs)
+        print(tf.shape(outputs))
         return tf.squeeze(outputs)
 
     def compute_output_shape(self, input_shape):

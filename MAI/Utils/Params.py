@@ -1,6 +1,6 @@
 from tensorflow import keras
 
-IMG_SIZE = 512
+IMG_SIZE = 300
 IMG_SIZE_2 = 90
 NUM_CLASSES = 14
 BATCH_SIZE = 4

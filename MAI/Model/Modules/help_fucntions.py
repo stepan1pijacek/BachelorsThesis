@@ -146,7 +146,7 @@ class CapsuleLayer(layers.Layer):
         assert self.routings > 0, 'The routings should be > 0.'
         for i in range(self.routings):
             # c.shape=[batch_size, num_capsule, 1, input_num_capsule]
-            c = tf.nn.softmax(b, axis=-1)
+            c = tf.nn.softmax(b, axis=1)
             print("\n printing C")
             print(tf.shape(c))
             # c.shape = [batch_size, num_capsule, 1, input_num_capsule]

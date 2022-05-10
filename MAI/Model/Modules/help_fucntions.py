@@ -140,13 +140,13 @@ class CapsuleLayer(layers.Layer):
         # The prior for coupling coefficient, initialized as zeros.
         # b.shape = [None, self.num_capsule, 1, self.input_num_capsule].
         # https://datascience.stackexchange.com/questions/90636/typeerror-expected-int32-got-none-of-type-nonetype-instead
-        b = tf.zeros(shape=[1, self.num_capsule, 1, self.input_num_capsule])
+        b = tf.zeros(shape=[tf.shape(inputs)[0], self.num_capsule, 1, self.input_num_capsule])
         print(b)
 
         assert self.routings > 0, 'The routings should be > 0.'
         for i in range(self.routings):
             # c.shape=[batch_size, num_capsule, 1, input_num_capsule]
-            c = tf.nn.softmax(b, axis=1)
+            c = tf.nn.softmax(b, axis=-1)
 
             # c.shape = [batch_size, num_capsule, 1, input_num_capsule]
             # inputs_hat.shape=[None, num_capsule, input_num_capsule, dim_capsule]

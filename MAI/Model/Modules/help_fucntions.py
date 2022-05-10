@@ -146,7 +146,9 @@ class CapsuleLayer(layers.Layer):
         assert self.routings > 0, 'The routings should be > 0.'
         for i in range(self.routings):
             # c.shape=[batch_size, num_capsule, 1, input_num_capsule]
+            # TODO Here is the mistake, output of softmax is incorrect
             c = tf.nn.softmax(b, axis=0)
+            print("\nPrinting C \n")
             print(c)
             # c.shape = [batch_size, num_capsule, 1, input_num_capsule]
             # inputs_hat.shape=[None, num_capsule, input_num_capsule, dim_capsule]

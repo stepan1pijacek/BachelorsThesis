@@ -170,7 +170,7 @@ class CapsuleLayer(layers.Layer):
                 print(b)
         # End: Routing algorithm -----------------------------------------------------------------------#
 
-            return tf.squeeze(outputs)
+        return tf.squeeze(outputs)
 
     def compute_output_shape(self, input_shape):
         return tuple([None, self.num_capsule, self.dim_capsule])

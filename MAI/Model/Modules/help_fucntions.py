@@ -147,7 +147,7 @@ class CapsuleLayer(layers.Layer):
         for i in range(self.routings):
             # c.shape=[batch_size, num_capsule, 1, input_num_capsule]
             # TODO Here is the mistake, output of softmax is incorrect
-            c = tf.nn.softmax(b, axis=0)
+            c = tf.nn.softmax(b, axis=1)
             print("\nPrinting C \n")
             print(c)
             # c.shape = [batch_size, num_capsule, 1, input_num_capsule]

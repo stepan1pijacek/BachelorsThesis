@@ -1,6 +1,6 @@
-import MAI.Model.ReCa.CapsuleNetwork as Caps
-import MAI.Training.CapsNetTraining as train
-import MAI.Utils.CreateTrainingData as ctd
+# import MAI.Model.ReCa.CapsuleNetwork as Caps
+# import MAI.Training.CapsNetTraining as train
+# import MAI.Utils.CreateTrainingData as ctd
 import MAI.Training.train as train_idk
 from MAI.Model.Modules.NewArchitecture import embedded_models
 

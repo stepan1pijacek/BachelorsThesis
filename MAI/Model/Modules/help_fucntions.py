@@ -118,12 +118,12 @@ class CapsuleLayer(layers.Layer):
         # inputs.shape=[None, input_num_capsule, input_dim_capsule]
         # inputs_expand.shape=[None, 1, input_num_capsule, input_dim_capsule]
         print(inputs)
-        inputs_expand = tf.expand_dims(inputs, 1)
+        inputs_expand = K.expand_dims(inputs, 1)
         print(inputs_expand)
 
         # Replicate num_capsule dimension to prepare being multiplied by W
         # inputs_tiled.shape=[None, num_capsule, input_num_capsule, input_dim_capsule]
-        inputs_tiled = tf.tile(inputs_expand, [1, self.num_capsule, 1, 1])
+        inputs_tiled = K.tile(inputs_expand, [1, self.num_capsule, 1, 1])
         print(inputs_tiled)
 
         # Compute `inputs * W` by scanning inputs_tiled on dimension 0.
@@ -132,12 +132,12 @@ class CapsuleLayer(layers.Layer):
         # Regard the first two dimensions as `batch` dimension, then
         # matmul(W, x): [..., dim_capsule, input_dim_capsule] x [..., input_dim_capsule, 1] -> [..., dim_capsule, 1].
         # inputs_hat.shape = [None, num_capsule, input_num_capsule, dim_capsule]
-        inputs_hat = tf.map_fn(lambda x: tf.matmul(x, self.W), elems=inputs_tiled)
+        inputs_hat = K.map_fn(lambda x: K.batch_dot(x, self.W), elems=inputs_tiled)
 
         # Begin: Routing algorithm ---------------------------------------------------------------------#
         # The prior for coupling coefficient, initialized as zeros.
         # b.shape = [None, self.num_capsule, 1, self.input_num_capsule].
-        b = tf.zeros(shape=[inputs.shape[0], self.num_capsule, 1, self.input_num_capsule])
+        b = tf.zeros(shape=[K.shape(inputs_hat)[0], self.num_capsule, self.input_num_capsule])
 
         assert self.routings > 0, 'The routings should be > 0.'
         for i in range(self.routings):

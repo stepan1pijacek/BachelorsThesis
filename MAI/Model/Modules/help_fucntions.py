@@ -116,11 +116,11 @@ class CapsuleLayer(layers.Layer):
 
     def call(self, inputs, training=None):
         # inputs.shape=[None, input_num_capsule, input_dim_capsule]
-        # inputs_expand.shape=[None, 1, input_num_capsule, input_dim_capsule, 1]
+        # inputs_expand.shape=[None, 1, input_num_capsule, input_dim_capsule]
         inputs_expand = tf.expand_dims(inputs, 1)
 
         # Replicate num_capsule dimension to prepare being multiplied by W
-        # inputs_tiled.shape=[None, num_capsule, input_num_capsule, input_dim_capsule, 1]
+        # inputs_tiled.shape=[None, num_capsule, input_num_capsule, input_dim_capsule]
         inputs_tiled = tf.tile(inputs_expand, [1, self.num_capsule, 1, 1])
 
         # Compute `inputs * W` by scanning inputs_tiled on dimension 0.
@@ -183,5 +183,5 @@ def PrimaryCap(inputs, dim_capsule, n_channels, kernel_size, strides, padding):
     """
     output = layers.Conv2D(filters=dim_capsule * n_channels, kernel_size=kernel_size, strides=strides, padding=padding,
                            name='primarycap_conv2d')(inputs)
-    outputs = layers.Reshape(target_shape=[-1, dim_capsule], name='primarycap_reshape')(output)
+    outputs = layers.Reshape(target_shape=[tf.shape(output)[1], dim_capsule], name='primarycap_reshape')(output)
     return layers.Lambda(squash, name='primarycap_squash')(outputs)

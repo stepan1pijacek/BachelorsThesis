@@ -57,7 +57,7 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     # input_caps_net = Input(shape=fusion, batch_size=4)
     # conv1 = EfficientNetB4(include_top=False)(fusion)
     # print(tf.shape(conv1, name="conv1"))
-    primaryCaps = PrimaryCap(fusion, dim_capsule=2, n_channels=8, kernel_size=9, strides=2, padding='same')
+    primaryCaps = PrimaryCap(fusion, dim_capsule=8, n_channels=32, kernel_size=9, strides=2, padding='valid')
     digitCaps = CapsuleLayer(num_capsule=n_class, dim_capsule=16, routings=routings, name='digitcaps')(primaryCaps)
 
     print(tf.shape(digitCaps))

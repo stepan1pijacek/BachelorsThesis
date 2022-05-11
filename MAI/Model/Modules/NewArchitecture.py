@@ -51,7 +51,6 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     module3_out = module3(model)
 
     fusion = concatenate([module1_out, module2_out, module3_out])
-    print(fusion)
     # input_caps_net = layers.Input(shape=softmax_out, batch_size=batch_size)
     #
     # input_caps_net = Input(shape=fusion, batch_size=4)

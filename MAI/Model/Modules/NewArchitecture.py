@@ -39,7 +39,7 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
                     n_class=14,
                     routings=2,
                     batch_size=4):
-    input = Input(shape=input_shape, batch_size=batch_size)
+    input = Input(shape=input_shape)
 
     model = Conv2D(64, 3, activation='relu', padding='same', kernel_initializer='he_normal')(input)
     model = Activation('relu')(model)

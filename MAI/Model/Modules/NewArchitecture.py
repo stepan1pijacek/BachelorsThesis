@@ -38,8 +38,8 @@ def module3(model):
 def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
                     n_class=14,
                     routings=2,
-                    batch_size=4):
-    input = Input(shape=input_shape)
+                    batch_size_o=4):
+    input = Input(shape=input_shape, batch_size=batch_size_o)
 
     model = Conv2D(64, 3, activation='relu', padding='same', kernel_initializer='he_normal')(input)
     model = Activation('relu')(model)
@@ -54,7 +54,8 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     # input_caps_net = layers.Input(shape=softmax_out, batch_size=batch_size)
     #
     # input_caps_net = Input(shape=fusion, batch_size=4)
-    # conv1 = EfficientNetB4(include_top=False)(fusion)
+    # conv1 = layers.Conv2D(filters=256,
+    # kernel_size=7, strides=1, padding='valid', activation='relu', name='conv1')(fusion)
     # print(tf.shape(conv1, name="conv1"))
     primaryCaps = PrimaryCap(fusion, dim_capsule=8, n_channels=32, kernel_size=9, strides=2, padding='valid')
     digitCaps = CapsuleLayer(num_capsule=n_class, dim_capsule=16, routings=routings, name='digitcaps')(primaryCaps)

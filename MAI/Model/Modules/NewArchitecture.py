@@ -67,9 +67,9 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     out_caps = Dense(14, activation="sigmoid")(out_caps)
     train_Model = models.Model(input, out_caps)
 
-    plot_model(
-        train_Model, to_file='Output/model.png', show_shapes=True, show_layer_names=True,
-        rankdir='TB', expand_nested=False, dpi=96
-    )
+    # plot_model(
+    #    train_Model, to_file='Output/model.png', show_shapes=True, show_layer_names=True,
+    #    rankdir='TB', expand_nested=False, dpi=96
+    # )
 
     return train_Model

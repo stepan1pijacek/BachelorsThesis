@@ -33,7 +33,7 @@ class TrainingClass:
                                                  classes=all_labels,
                                                  target_size=(params.IMG_SIZE, params.IMG_SIZE),
                                                  color_mode='rgb',
-                                                 batch_size=8,
+                                                 batch_size=4,
                                                  subset='training')
 
         valid_gen = core_idg.flow_from_dataframe(dataframe=train_df,

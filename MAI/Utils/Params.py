@@ -3,7 +3,7 @@ from tensorflow import keras
 IMG_SIZE = 412
 IMG_SIZE_2 = 412
 NUM_CLASSES = 14
-BATCH_SIZE = 4
+BATCH_SIZE = 5
 NUM_EPOCHS = 100
 
 DIMENSIONS = "14,14,28"

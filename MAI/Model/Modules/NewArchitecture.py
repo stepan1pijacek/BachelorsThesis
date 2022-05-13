@@ -7,7 +7,7 @@ from tensorflow.python.keras.layers import *
 from tensorflow.python.keras.layers import Dense, GlobalMaxPooling2D, Dropout
 
 from MAI.Model.Modules.help_fucntions import PrimaryCap, CapsuleLayer, Length
-from MAI.Utils.Params import IMG_SIZE
+from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
 
 
 def module1(model):
@@ -38,7 +38,7 @@ def module3(model):
 def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
                     n_class=14,
                     routings=2,
-                    batch_size_o=4):
+                    batch_size_o=BATCH_SIZE):
     input = Input(shape=input_shape, batch_size=batch_size_o)
 
     model = Conv2D(64, 3, activation='relu', padding='same', kernel_initializer='he_normal')(input)

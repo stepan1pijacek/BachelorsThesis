@@ -58,7 +58,7 @@ class TrainingClass:
         #              loss=AsymetricLossOptimized,
         #              metrics=params.METRICS
         #              )
-        model.compile(optimizer='SGD',
+        model.compile(optimizer='RMSProp',
                       loss=AsymetricLossOptimized,
                       metrics=params.METRICS
                       )

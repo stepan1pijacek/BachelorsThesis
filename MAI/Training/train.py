@@ -65,9 +65,9 @@ class TrainingClass:
 
         history = model.fit(
             train_gen,
-            batch_size=4,
+            batch_size=8,
             epochs=100,
-            validation_steps=valid_gen.samples // 4,
+            validation_steps=valid_gen.samples // 8,
             steps_per_epoch=500,
             validation_data=valid_gen,
 

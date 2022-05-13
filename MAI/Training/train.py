@@ -44,7 +44,7 @@ class TrainingClass:
                                                  classes=all_labels,
                                                  target_size=(params.IMG_SIZE, params.IMG_SIZE),
                                                  color_mode='rgb',
-                                                 batch_size=8,
+                                                 batch_size=4,
                                                  subset='validation')
 
         log = callbacks.CSVLogger('Output/log.csv')
@@ -65,9 +65,9 @@ class TrainingClass:
 
         history = model.fit(
             train_gen,
-            batch_size=8,
+            batch_size=4,
             epochs=100,
-            validation_steps=valid_gen.samples // 8,
+            validation_steps=valid_gen.samples // 4,
             steps_per_epoch=500,
             validation_data=valid_gen,
 

@@ -4,7 +4,8 @@ from tensorflow.python.keras.applications.efficientnet import EfficientNetB4
 from tensorflow.python.keras.applications.inception_resnet_v2 import InceptionResNetV2
 from tensorflow.python.keras.applications.resnet_v2 import ResNet50V2, ResNet101V2, ResNet152V2
 from tensorflow.python.keras.layers import *
-from tensorflow.python.keras.layers import Dense, GlobalMaxPooling2D, Dropout
+from tensorflow.python.keras.layers import Dense
+from tensorflow.python.keras.utils.vis_utils import plot_model
 
 from MAI.Model.Modules.help_fucntions import PrimaryCap, CapsuleLayer, Length
 from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
@@ -65,5 +66,10 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     print(tf.shape(out_caps))
     out_caps = Dense(14, activation="sigmoid")(out_caps)
     train_Model = models.Model(input, out_caps)
+
+    plot_model(
+        train_Model, to_file='Output/model.png', show_shapes=True, show_layer_names=True,
+        rankdir='TB', expand_nested=False, dpi=96
+    )
 
     return train_Model

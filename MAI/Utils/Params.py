@@ -1,7 +1,7 @@
 from tensorflow import keras
 
-IMG_SIZE = 412
-IMG_SIZE_2 = 412
+IMG_SIZE = 512
+IMG_SIZE_2 = 512
 NUM_CLASSES = 14
 BATCH_SIZE = 5
 NUM_EPOCHS = 100

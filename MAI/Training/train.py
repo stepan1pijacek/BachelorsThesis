@@ -65,13 +65,12 @@ class TrainingClass:
 
         history = model.fit(
             train_gen,
-            workers=1,
-            use_multiprocessing=False,
-            batch_size=8,
+            batch_size=4,
             epochs=100,
-            validation_steps=valid_gen.samples // 16,
-            steps_per_epoch=200,
+            validation_steps=valid_gen.samples // 4,
+            steps_per_epoch=500,
             validation_data=valid_gen,
+
             callbacks=[log, checkpoint, lr_decay]
         )
 

@@ -62,7 +62,8 @@ class TrainingClass:
                       loss=AsymetricLossOptimized,
                       metrics=params.METRICS
                       )
-        print("Printing number of valid gen samples \n" + valid_gen.samples)
+        print("Printing number of valid gen samples \n")
+        print(valid_gen.samples)
         history = model.fit(
             train_gen,
             batch_size=params.BATCH_SIZE,

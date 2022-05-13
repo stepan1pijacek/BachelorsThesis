@@ -44,7 +44,7 @@ class TrainingClass:
                                                  classes=all_labels,
                                                  target_size=(params.IMG_SIZE, params.IMG_SIZE),
                                                  color_mode='rgb',
-                                                 batch_size=params.BATCH_SIZE,
+                                                 batch_size=6,
                                                  subset='validation')
 
         log = callbacks.CSVLogger('Output/log.csv')
@@ -62,12 +62,12 @@ class TrainingClass:
                       loss=AsymetricLossOptimized,
                       metrics=params.METRICS
                       )
-
+        print("Printing number of valid gen samples \n" + valid_gen.samples)
         history = model.fit(
             train_gen,
             batch_size=params.BATCH_SIZE,
             epochs=100,
-            validation_steps=valid_gen.samples // params.BATCH_SIZE,
+            validation_steps=valid_gen.samples // 6,
             steps_per_epoch=500,
             validation_data=valid_gen,
 

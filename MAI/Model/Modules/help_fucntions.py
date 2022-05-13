@@ -114,7 +114,7 @@ class CapsuleLayer(layers.Layer):
 
         self.built = True
 
-    def call(self, inputs, training=None):
+    def call(self, inputs, training=None, **kwargs):
         # inputs.shape=[None, input_num_capsule, input_dim_capsule]
         # inputs_expand.shape=[None, 1, input_num_capsule, input_dim_capsule, 1]
         inputs_expand = tf.expand_dims(tf.expand_dims(inputs, 1), -1)

@@ -64,6 +64,8 @@ class TrainingClass:
                       )
         print("Printing number of valid gen samples \n")
         print(valid_gen.samples)
+        print("Printing number of training samples")
+        print(train_gen.samples)
         history = model.fit(
             train_gen,
             batch_size=4,

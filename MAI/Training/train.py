@@ -25,7 +25,7 @@ class TrainingClass:
             shear_range=0.1,
             fill_mode='reflect',
             zoom_range=0.2,
-            validation_split=0.15)
+            validation_split=0.2)
 
         train_gen = core_idg.flow_from_dataframe(dataframe=train_df,
                                                  directory=None,
@@ -35,7 +35,7 @@ class TrainingClass:
                                                  classes=all_labels,
                                                  target_size=(params.IMG_SIZE, params.IMG_SIZE),
                                                  color_mode='rgb',
-                                                 batch_size=4,
+                                                 batch_size=2,
                                                  subset='training')
 
         valid_gen = core_idg.flow_from_dataframe(dataframe=train_df,
@@ -46,7 +46,7 @@ class TrainingClass:
                                                  classes=all_labels,
                                                  target_size=(params.IMG_SIZE, params.IMG_SIZE),
                                                  color_mode='rgb',
-                                                 batch_size=4,
+                                                 batch_size=2,
                                                  subset='validation')
 
         log = callbacks.CSVLogger('Output/log.csv')
@@ -60,7 +60,7 @@ class TrainingClass:
         #              loss=AsymetricLossOptimized,
         #              metrics=params.METRICS
         #              )
-        model.compile(optimizer='rmsprop',
+        model.compile(optimizer='adam',
                       loss=AsymetricLossOptimized,
                       metrics=params.METRICS
                       )
@@ -70,9 +70,9 @@ class TrainingClass:
         print(train_gen.samples)
         history = model.fit(
             train_gen,
-            batch_size=4,
+            batch_size=2,
             epochs=100,
-            validation_steps=valid_gen.samples // 4,
+            validation_steps=valid_gen.samples // 2,
             steps_per_epoch=500,
             validation_data=valid_gen,
 

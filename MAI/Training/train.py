@@ -1,3 +1,5 @@
+import tensorflow as tf
+
 from pickle import dump
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.python.keras.utils.version_utils import callbacks
@@ -23,7 +25,7 @@ class TrainingClass:
             shear_range=0.1,
             fill_mode='reflect',
             zoom_range=0.2,
-            validation_split=0.3)
+            validation_split=0.5)
 
         train_gen = core_idg.flow_from_dataframe(dataframe=train_df,
                                                  directory=None,

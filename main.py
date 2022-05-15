@@ -3,12 +3,15 @@
 # import MAI.Utils.CreateTrainingData as ctd
 import MAI.Training.train as train_idk
 from MAI.Model.Modules.NewArchitecture import embedded_models
+from MAI.Evaluation.Evaluate import evaluate
 
 
 def main():
     # model = Caps.CapsNet()
     # train.train(ctd.training_function())
     train_idk.TrainingClass.training_function(embedded_models())
+    evaluate(embedded_models())
+
 
 
 if __name__ == '__main__':

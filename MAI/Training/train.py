@@ -60,7 +60,7 @@ class TrainingClass:
         #              loss=AsymetricLossOptimized,
         #              metrics=params.METRICS
         #              )
-        model.compile(optimizer='adam',
+        model.compile(optimizer='adadelta',
                       loss=AsymetricLossOptimized,
                       metrics=params.METRICS
                       )

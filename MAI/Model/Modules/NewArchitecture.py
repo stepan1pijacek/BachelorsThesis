@@ -1,11 +1,8 @@
 import tensorflow as tf
-from tensorflow.keras import layers, models
-from tensorflow.python.keras.applications.efficientnet import EfficientNetB4
-from tensorflow.python.keras.applications.inception_resnet_v2 import InceptionResNetV2
+from tensorflow.keras import models
 from tensorflow.python.keras.applications.resnet_v2 import ResNet50V2, ResNet101V2, ResNet152V2
 from tensorflow.python.keras.layers import *
 from tensorflow.python.keras.layers import Dense
-from tensorflow.python.keras.utils.vis_utils import plot_model
 
 from MAI.Model.Modules.help_fucntions import PrimaryCap, CapsuleLayer, Length
 from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE

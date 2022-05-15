@@ -23,7 +23,7 @@ class TrainingClass:
             shear_range=0.1,
             fill_mode='reflect',
             zoom_range=0.2,
-            validation_split=0.2)
+            validation_split=0.3)
 
         train_gen = core_idg.flow_from_dataframe(dataframe=train_df,
                                                  directory=None,

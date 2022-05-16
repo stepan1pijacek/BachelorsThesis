@@ -33,11 +33,10 @@ class TrainingClass:
                                                  x_col='path',
                                                  y_col='newLabel',
                                                  class_mode='categorical',
-                                                 validate_filenames=False,
                                                  classes=all_labels,
                                                  target_size=(params.IMG_SIZE, params.IMG_SIZE),
                                                  color_mode='rgb',
-                                                 batch_size=8,
+                                                 batch_size=2,
                                                  subset='training')
 
         valid_gen = core_idg.flow_from_dataframe(dataframe=train_df,
@@ -45,11 +44,10 @@ class TrainingClass:
                                                  x_col='path',
                                                  y_col='newLabel',
                                                  class_mode='categorical',
-                                                 validate_filenames=False,
                                                  classes=all_labels,
                                                  target_size=(params.IMG_SIZE, params.IMG_SIZE),
                                                  color_mode='rgb',
-                                                 batch_size=8,
+                                                 batch_size=2,
                                                  subset='validation')
 
         log = callbacks.CSVLogger('Output/log.csv')
@@ -76,10 +74,10 @@ class TrainingClass:
         print(train_gen.samples)
         history = model.fit(
             train_gen,
-            batch_size=8,
-            epochs=500,
-            validation_steps=valid_gen.samples // 8,
-            steps_per_epoch=100,
+            batch_size=2,
+            epochs=200,
+            validation_steps=valid_gen.samples // 2,
+            steps_per_epoch=500,
             validation_data=valid_gen,
 
             callbacks=[log, checkpoint, lr_decay]

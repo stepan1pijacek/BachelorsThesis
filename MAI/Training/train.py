@@ -60,10 +60,13 @@ class TrainingClass:
         #              loss=AsymetricLossOptimized,
         #              metrics=params.METRICS
         #              )
-        model.compile(optimizer='Adamax',
-                      loss=AsymetricLossOptimized,
-                      metrics=params.METRICS
-                      )
+        model.compile(
+            optimizer=tf.keras.optimizers.Adam(
+                learning_rate=params.trans_learning_rate
+            ),
+            loss=AsymetricLossOptimized,
+            metrics=params.METRICS
+        )
         print("Printing number of valid gen samples \n")
         print(valid_gen.samples)
         print("Printing number of training samples")
@@ -71,7 +74,7 @@ class TrainingClass:
         history = model.fit(
             train_gen,
             batch_size=2,
-            epochs=100,
+            epochs=200,
             validation_steps=valid_gen.samples // 2,
             steps_per_epoch=500,
             validation_data=valid_gen,

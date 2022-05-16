@@ -25,7 +25,7 @@ class TrainingClass:
             shear_range=0.1,
             fill_mode='reflect',
             zoom_range=0.2,
-            validation_split=0.2)
+            validation_split=0.3555)
 
         train_gen = core_idg.flow_from_dataframe(dataframe=train_df,
                                                  directory=None,
@@ -60,11 +60,12 @@ class TrainingClass:
         #              loss=AsymetricLossOptimized,
         #              metrics=params.METRICS
         #              )
+        pred_y = model.predict(train_df, batch_size=2, verbose=True)
         model.compile(
             optimizer=tf.keras.optimizers.Adam(
                 learning_rate=params.trans_learning_rate
             ),
-            loss=AsymetricLossOptimized,
+            loss=tf.keras.losses.binary_crossentropy(train_df, pred_y),
             metrics=params.METRICS
         )
         print("Printing number of valid gen samples \n")

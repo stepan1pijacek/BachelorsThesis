@@ -64,7 +64,7 @@ class TrainingClass:
             optimizer=tf.keras.optimizers.Adam(
                 learning_rate=params.trans_learning_rate
             ),
-            loss=tf.keras.losses.binary_crossentropy,
+            loss=AsymetricLossOptimized,
             metrics=params.METRICS
         )
         print("Printing number of valid gen samples \n")

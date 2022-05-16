@@ -100,7 +100,7 @@ def get_roc_curve(labels, predicted_vals, test_Y):
             plt.title('ROC curve')
             plt.legend(loc='best')
 
-            plt.savefig('outputs/trained_net_2.png')
+            plt.savefig('Output/trained_net_2.png')
 
             cm = multilabel_confusion_matrix(test_Y, y_pred)
             cm_df = pd.DataFrame(cm)

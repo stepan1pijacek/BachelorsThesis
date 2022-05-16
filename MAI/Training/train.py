@@ -35,7 +35,7 @@ class TrainingClass:
                                                  classes=all_labels,
                                                  target_size=(params.IMG_SIZE, params.IMG_SIZE),
                                                  color_mode='rgb',
-                                                 batch_size=6,
+                                                 batch_size=2,
                                                  subset='training')
 
         valid_gen = core_idg.flow_from_dataframe(dataframe=train_df,
@@ -73,7 +73,7 @@ class TrainingClass:
         print(train_gen.samples)
         history = model.fit(
             train_gen,
-            batch_size=6,
+            batch_size=2,
             epochs=200,
             validation_steps=valid_gen.samples // 6,
             steps_per_epoch=500,

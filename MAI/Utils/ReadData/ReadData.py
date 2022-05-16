@@ -28,17 +28,19 @@ def main(path="MAI/Utils/ReadData/Images"):
 
     for c_label in all_labels:
         if len(c_label) > 1:  # leave out empty labels
-            all_xray_df[c_label] = all_xray_df['Finding Labels'].map(lambda finding: 1.0 if c_label in finding else 0)
+            all_xray_df[c_label] = all_xray_df['Finding Labels']\
+                .map(lambda finding: 1.0 if c_label in finding else 0)\
+                .copy()
 
     with open("MAI/Utils/ReadData/test_list.txt", 'r') as f:
         lines = f.readlines()
         lines = list([line.rstrip('\n') for line in lines])
-        train_val_df = all_xray_df[all_xray_df['ImageIndex'].isin(lines)]
+        train_val_df = all_xray_df[all_xray_df['ImageIndex'].isin(lines)].copy()
 
     with open("MAI/Utils/ReadData/test_list.txt", 'r') as f:
         lines = f.readlines()
         lines = list([line.rstrip('\n') for line in lines])
-        test_df = all_xray_df[all_xray_df['ImageIndex'].isin(lines)]
+        test_df = all_xray_df[all_xray_df['ImageIndex'].isin(lines)].copy()
 
     print('train', train_val_df.shape[0], 'test', test_df.shape[0])
 

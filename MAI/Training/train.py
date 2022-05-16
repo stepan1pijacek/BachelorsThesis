@@ -60,7 +60,6 @@ class TrainingClass:
         #              loss=AsymetricLossOptimized,
         #              metrics=params.METRICS
         #              )
-        pred_y = model.predict(train_df, batch_size=2, verbose=True)
         model.compile(
             optimizer=tf.keras.optimizers.Adam(
                 learning_rate=params.trans_learning_rate

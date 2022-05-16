@@ -13,7 +13,8 @@ from MAI.Utils.Params import IMG_SIZE
 def evaluate(model):
     train_df, test_df, all_labels = main()
     weight_path = "Output/{}_weights.best.hdf5".format('xray_class')
-
+    train_df['path'] = train_df['path'].astype(str)
+    test_df['path'] = test_df['path'].astype(str)
     test_core_idg = ImageDataGenerator(
     )
 

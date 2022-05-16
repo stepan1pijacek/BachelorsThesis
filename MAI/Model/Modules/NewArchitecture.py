@@ -55,8 +55,8 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     # conv1 = layers.Conv2D(filters=256,
     # kernel_size=7, strides=1, padding='valid', activation='relu', name='conv1')(fusion)
     # print(tf.shape(conv1, name="conv1"))
-    primaryCaps = PrimaryCap(fusion, dim_capsule=2, n_channels=16, kernel_size=9, strides=2, padding='valid')
-    digitCaps = CapsuleLayer(num_capsule=n_class, dim_capsule=32, routings=routings, name='digitcaps')(primaryCaps)
+    primaryCaps = PrimaryCap(fusion, dim_capsule=2, n_channels=8, kernel_size=9, strides=2, padding='valid')
+    digitCaps = CapsuleLayer(num_capsule=n_class, dim_capsule=16, routings=routings, name='digitcaps')(primaryCaps)
 
     print(tf.shape(digitCaps))
     out_caps = Length(name='capsnet')(digitCaps)

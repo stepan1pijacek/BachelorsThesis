@@ -16,7 +16,7 @@ def main(path="MAI/Utils/ReadData/NewImages"):
                                 glob(os.path.join(path, f'images_0{i}', '*.png'))})
 
     print('Scans found:', len(all_image_paths), ', Total Headers', all_xray_df.shape[0])
-    all_xray_df['path'] = all_xray_df['Image Index'].map(all_image_paths.get)
+    all_xray_df['path'] = all_xray_df['ImageIndex'].map(all_image_paths.get)
 
     all_xray_df['Finding Labels'] = all_xray_df['Finding Labels'].map(lambda x: x.replace('No Finding', ''))
     all_xray_df = all_xray_df[all_xray_df['Finding Labels'] != '']

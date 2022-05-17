@@ -44,4 +44,4 @@ def main(path="MAI/Utils/ReadData/NewImages"):
     train_val_df['newLabel'] = train_val_df.apply(lambda x: x['Finding Labels'].split('|'), axis=1)
     test_df['newLabel'] = test_df.apply(lambda x: x['Finding Labels'].split('|'), axis=1)
 
-    return train_val_df, test_df[:15732], all_labels
+    return train_val_df[:20888], test_df[:15732], all_labels

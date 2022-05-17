@@ -12,12 +12,11 @@ def main(path="MAI/Utils/ReadData/NewImages"):
     print(all_xray_df.columns)
     all_image_paths = {}
     for i in range(1, 13):
-        print(os.path.join(path, f'images_0{i}', '*.png'))
         all_image_paths.update({os.path.basename(x): x for x in
                                 glob(os.path.join(path, f'images_0{i}', '*.png'))})
 
     print('Scans found:', len(all_image_paths), ', Total Headers', all_xray_df.shape[0])
-    all_xray_df['path'] = all_xray_df['ImageIndex'].map(all_image_paths.get)
+    all_xray_df['path'] = all_xray_df['Image Index'].map(all_image_paths.get)
 
     all_xray_df['Finding Labels'] = all_xray_df['Finding Labels'].map(lambda x: x.replace('No Finding', ''))
     all_xray_df = all_xray_df[all_xray_df['Finding Labels'] != '']
@@ -28,23 +27,21 @@ def main(path="MAI/Utils/ReadData/NewImages"):
 
     for c_label in all_labels:
         if len(c_label) > 1:  # leave out empty labels
-            all_xray_df[c_label] = all_xray_df['Finding Labels']\
-                .map(lambda finding: 1.0 if c_label in finding else 0)\
-                .copy()
+            all_xray_df[c_label] = all_xray_df['Finding Labels'].map(lambda finding: 1.0 if c_label in finding else 0).copy()
 
     with open("MAI/Utils/ReadData/test_list.txt", 'r') as f:
         lines = f.readlines()
         lines = list([line.rstrip('\n') for line in lines])
-        train_val_df = all_xray_df[all_xray_df['ImageIndex'].isin(lines)].copy()
+        train_val_df = all_xray_df[all_xray_df['Image Index'].isin(lines)].copy()
 
     with open("MAI/Utils/ReadData/test_list.txt", 'r') as f:
         lines = f.readlines()
         lines = list([line.rstrip('\n') for line in lines])
-        test_df = all_xray_df[all_xray_df['ImageIndex'].isin(lines)].copy()
+        test_df = all_xray_df[all_xray_df['Image Index'].isin(lines)].copy()
 
     print('train', train_val_df.shape[0], 'test', test_df.shape[0])
 
     train_val_df['newLabel'] = train_val_df.apply(lambda x: x['Finding Labels'].split('|'), axis=1)
     test_df['newLabel'] = test_df.apply(lambda x: x['Finding Labels'].split('|'), axis=1)
 
-    return train_val_df, test_df, all_labels
+    return train_val_df, test_df[:15732], all_labels

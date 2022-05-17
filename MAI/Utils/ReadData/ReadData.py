@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 
-def main(path="MAI/Utils/ReadData/Images"):
+def main(path="MAI/Utils/ReadData/NewImages"):
 
     all_xray_df = pd.read_csv('MAI/Utils/ReadData/Data_Entry_2017_v2020.csv')
     print(all_xray_df.columns)

@@ -32,12 +32,12 @@ def main(path="MAI/Utils/ReadData/NewImages"):
     with open("MAI/Utils/ReadData/test_list.txt", 'r') as f:
         lines = f.readlines()
         lines = list([line.rstrip('\n') for line in lines])
-        train_val_df = all_xray_df[all_xray_df['Image Index'].isin(lines)].copy()
+        train_val_df = all_xray_df[all_xray_df['ImageIndex'].isin(lines)].copy()
 
     with open("MAI/Utils/ReadData/test_list.txt", 'r') as f:
         lines = f.readlines()
         lines = list([line.rstrip('\n') for line in lines])
-        test_df = all_xray_df[all_xray_df['Image Index'].isin(lines)].copy()
+        test_df = all_xray_df[all_xray_df['ImageIndex'].isin(lines)].copy()
 
     print('train', train_val_df.shape[0], 'test', test_df.shape[0])
 

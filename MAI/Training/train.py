@@ -1,5 +1,6 @@
 import tensorflow as tf
 
+import tensorflow_addons as tfa
 from pickle import dump
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.python.keras.utils.version_utils import callbacks
@@ -62,8 +63,9 @@ class TrainingClass:
         #              metrics=params.METRICS
         #              )
         model.compile(
-            optimizer=tf.keras.optimizers.Adam(
-                learning_rate=params.trans_learning_rate
+            optimizer=tfa.optimizers.AdamW(
+                learning_rate=params.trans_learning_rate,
+                weight_decay=params.trans_weight_decay
             ),
             loss=AsymetricLossOptimized,
             metrics=params.METRICS

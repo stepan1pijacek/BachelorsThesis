@@ -23,7 +23,7 @@ def capsNet_view(model, n_class, routings):
     primaryCaps = PrimaryCap(res_net, dim_capsule=4, n_channels=16, kernel_size=9, strides=2, padding='valid')
     digitCaps = CapsuleLayer(num_capsule=n_class, dim_capsule=32, routings=routings, name='digitcaps')(primaryCaps)
     out_caps = Length(name='capsnet')(digitCaps)
-    print(tf.shape(out_caps))
+    out_caps = GlobalMaxPooling2D()(out_caps)
     out_caps = Dense(128)(out_caps)
     out_caps = Dropout(0.5)(out_caps)
     out_caps = Dense(64)(out_caps)
@@ -45,8 +45,8 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
 
     fusion = concatenate([gv, cnv])
 
+    fusion = Flatten()(fusion)
     fusion = Dense(128)(fusion)
-    fusion = Dropout(0.5)(fusion)
     fusion = Dense(64)(fusion)
 
     fusion = Dense(14, activation='sigmoid')(fusion)

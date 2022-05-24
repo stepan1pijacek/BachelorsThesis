@@ -1,4 +1,5 @@
 import os
+import tensorflow as tf
 
 import MAI.Training.train as train_idk
 from MAI.Model.Modules.NewArchitecture import embedded_models

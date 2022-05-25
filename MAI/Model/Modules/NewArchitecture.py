@@ -28,7 +28,7 @@ def global_view(model):
 def capsNet_view(input, routings):
 
     model = Conv2D(64, (5, 5), activation='relu', padding='same')(input)
-    # model = BatchNormalization()(model)
+    model = BatchNormalization()(model)
     model = Conv2D(64, (5, 5), activation='relu')(model)
     model = Conv2D(128, (3, 3), activation='relu')(model)
     model = Conv2D(128, (3, 3), activation='relu')(model)

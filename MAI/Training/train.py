@@ -63,9 +63,8 @@ class TrainingClass:
         #              metrics=params.METRICS
         #              )
         model.compile(
-            optimizer=tfa.optimizers.AdamW(
-                learning_rate=params.trans_learning_rate,
-                weight_decay=params.trans_weight_decay
+            optimizer=tf.optimizers.Adam(
+                learning_rate=params.trans_learning_rate
             ),
             loss=AsymetricLossOptimized,
             metrics=params.METRICS

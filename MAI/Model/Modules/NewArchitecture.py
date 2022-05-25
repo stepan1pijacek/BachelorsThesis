@@ -11,18 +11,12 @@ from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
 
 
 def global_view(model):
-    efficient = ResNet50V2(include_top=False)(model)
+    efficient = ResNet152V2(include_top=False)(model)
     efficient = GlobalMaxPooling2D()(efficient)
     efficient = Dense(256)(efficient)
     efficient = Dropout(0.5)(efficient)
     efficient = Dense(16)(efficient)
-
-    inception = ResNet101V2(include_top=False)(model)
-    inception = GlobalMaxPooling2D()(inception)
-    inception = Dense(256)(inception)
-    inception = Dropout(0.5)(inception)
-    inception = Dense(16)(inception)
-    return concatenate([efficient, inception])
+    return efficient
 
 
 def capsNet_view(input, routings):

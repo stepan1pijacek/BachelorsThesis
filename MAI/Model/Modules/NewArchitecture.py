@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras import models
-from tensorflow.python.keras.applications.efficientnet import EfficientNetB7
+from tensorflow.python.keras.applications.efficientnet import EfficientNetB1
 from tensorflow.python.keras.applications.inception_v3 import InceptionV3
 from tensorflow.python.keras.applications.resnet_v2 import ResNet50V2, ResNet101V2, ResNet152V2
 from tensorflow.python.keras.layers import *
@@ -11,12 +11,18 @@ from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
 
 
 def global_view(model):
-    efficient = InceptionV3(include_top=False)(model)
+    efficient = EfficientNetB1(include_top=False)(model)
     efficient = GlobalMaxPooling2D()(efficient)
     efficient = Dense(128)(efficient)
     efficient = Dropout(0.5)(efficient)
     efficient = Dense(64)(efficient)
-    return efficient
+
+    inception = InceptionV3(include_top=False)(model)
+    inception = GlobalMaxPooling2D()(inception)
+    inception = Dense(128)(inception)
+    inception = Dropout(0.5)(inception)
+    inception = Dense(64)(inception)
+    return concatenate([efficient, inception])
 
 
 def capsNet_view(model, n_class, routings):

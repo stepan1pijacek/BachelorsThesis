@@ -25,12 +25,19 @@ def global_view(model):
     return concatenate([efficient, inception])
 
 
-def capsNet_view(model, n_class, routings):
+def capsNet_view(input, routings):
 
-    primaryCaps = PrimaryCap(model, dim_capsule=4, n_channels=8, kernel_size=9, strides=2, padding='valid')
-    digitCaps = CapsuleLayer(num_capsule=n_class, dim_capsule=8, routings=routings, name='digitcaps')(primaryCaps)
-    digitCaps = CapsuleLayer(num_capsule=n_class + 2, dim_capsule=16, routings=routings + 2, name='digitcaps2')(digitCaps)
-    digitCaps = CapsuleLayer(num_capsule=n_class, dim_capsule=8, routings=routings, name='digitcaps3')(digitCaps)
+    model = Conv2D(64, (5, 5), activation='relu', padding='same')(input)
+    # model = BatchNormalization()(model)
+    model = Conv2D(64, (5, 5), activation='relu')(model)
+    model = Conv2D(128, (3, 3), activation='relu')(model)
+    model = Conv2D(128, (3, 3), activation='relu')(model)
+
+    primaryCaps = PrimaryCap(model, dim_capsule=2, n_channels=8, kernel_size=7, strides=2, padding='valid')
+
+    # Layer 3: Capsule layer. Routing algorithm works here.
+    digitCaps = CapsuleLayer(num_capsule=16, dim_capsule=8, routings=routings, name='digitcaps')(primaryCaps)
+    digitCaps = CapsuleLayer(num_capsule=14, dim_capsule=4, routings=routings, name='digitcaps2')(digitCaps)
 
     out_caps = Length(name='capsnet')(digitCaps)
     out_caps = Dense(128)(out_caps)
@@ -45,18 +52,13 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
                     batch_size_o=BATCH_SIZE):
     input = Input(shape=input_shape, batch_size=batch_size_o)
 
-    model = Conv2D(64, (5, 5), activation='relu', padding='same')(input)
-    model = BatchNormalization()(model)
-    model = Conv2D(64, (5, 5), activation='relu')(model)
-    model = Conv2D(128, (3, 3), activation='relu')(model)
-    model = Conv2D(128, (3, 3), activation='relu')(model)
-
     gv = global_view(input)
-    cnv = capsNet_view(model, n_class, routings)
+    cnv = capsNet_view(input, routings)
 
     fusion = concatenate([gv, cnv])
 
     fusion = Flatten()(fusion)
+    fusion = GlobalMaxPooling2D()(fusion)
     fusion = Dense(64)(fusion)
     fusion = Dense(32)(fusion)
 

@@ -21,7 +21,6 @@ def global_view(model):
 
 def capsNet_view(model, n_class, routings):
     res_net = ResNet152V2(include_top=False)(model)
-    res_net = GlobalMaxPooling2D()(res_net)
     primaryCaps = PrimaryCap(res_net, dim_capsule=4, n_channels=8, kernel_size=9, strides=2, padding='valid')
     digitCaps = CapsuleLayer(num_capsule=n_class, dim_capsule=16, routings=routings, name='digitcaps')(primaryCaps)
     out_caps = Length(name='capsnet')(digitCaps)

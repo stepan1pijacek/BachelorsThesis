@@ -7,7 +7,7 @@ from sklearn.metrics import roc_curve, roc_auc_score, \
 from tensorflow.python.keras.preprocessing.image import ImageDataGenerator
 
 from MAI.Utils.ReadData.ReadData import main
-from MAI.Utils.Params import IMG_SIZE
+from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
 
 
 def evaluate(model):
@@ -33,8 +33,7 @@ def evaluate(model):
 
     # load the best weights
     model.load_weights(weight_path)
-    pred_Y = model.predict(test_X, batch_size=2, verbose=True)
-    print(pred_Y)
+    pred_Y = model.predict(test_X, batch_size=BATCH_SIZE, verbose=True)
 
     for c_label, p_count, t_count in zip(all_labels,
                                          100 * np.mean(pred_Y, 0),

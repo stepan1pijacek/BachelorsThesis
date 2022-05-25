@@ -13,15 +13,15 @@ from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
 def global_view(model):
     efficient = ResNet50V2(include_top=False)(model)
     efficient = GlobalMaxPooling2D()(efficient)
-    efficient = Dense(128)(efficient)
+    efficient = Dense(256)(efficient)
     efficient = Dropout(0.5)(efficient)
-    efficient = Dense(64)(efficient)
+    efficient = Dense(16)(efficient)
 
     inception = ResNet101V2(include_top=False)(model)
     inception = GlobalMaxPooling2D()(inception)
-    inception = Dense(128)(inception)
+    inception = Dense(256)(inception)
     inception = Dropout(0.5)(inception)
-    inception = Dense(64)(inception)
+    inception = Dense(16)(inception)
     return concatenate([efficient, inception])
 
 
@@ -40,9 +40,6 @@ def capsNet_view(input, routings):
     digitCaps = CapsuleLayer(num_capsule=14, dim_capsule=4, routings=routings, name='digitcaps2')(digitCaps)
 
     out_caps = Length(name='capsnet')(digitCaps)
-    out_caps = Dense(128)(out_caps)
-    out_caps = Dropout(0.5)(out_caps)
-    out_caps = Dense(64)(out_caps)
     return out_caps
 
 
@@ -57,12 +54,9 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
 
     fusion = concatenate([gv, cnv])
 
-    fusion = Flatten()(fusion)
-    fusion = GlobalMaxPooling2D()(fusion)
-    fusion = Dense(64)(fusion)
     fusion = Dense(32)(fusion)
-
-    fusion = Dense(14, activation='sigmoid')(fusion)
+    fusion = Dropout(0.2)(fusion)
+    fusion = Dense(14, activation="sigmoid")(fusion)
 
     train_Model = models.Model(input, fusion)
 

@@ -27,7 +27,7 @@ def capsNet_view(input, routings):
     primarycaps = PrimaryCap(conv1, dim_capsule=8, n_channels=64, kernel_size=9, strides=2, padding='valid')
 
     # Layer 3: Capsule layer. Routing algorithm works here.
-    digitcaps = CapsuleLayer(num_capsule=14, dim_capsule=8,  dim_vector=16, num_routing=routings, name='digitcaps')(primarycaps)
+    digitcaps = CapsuleLayer(num_capsule=14, dim_capsule=16, num_routing=routings, name='digitcaps')(primarycaps)
     digitcaps = CapsuleLayer(num_capsule=14, dim_capsule=4, routings=routings, name='digitcaps2')(digitcaps)
 
     # Layer 4: This is an auxiliary layer to replace each capsule with its length. Just to match the true label's shape.

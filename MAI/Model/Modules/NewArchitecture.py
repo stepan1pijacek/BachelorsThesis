@@ -36,7 +36,7 @@ def capsNet_view(input, routings):
     primaryCaps = PrimaryCap(model, dim_capsule=4, n_channels=16, kernel_size=7, strides=2, padding='valid')
 
     # Layer 3: Capsule layer. Routing algorithm works here.
-    digitCaps = CapsuleLayer(num_capsule=14, dim_capsule=8, routings=routings, name='digitcaps')(primaryCaps)
+    digitCaps = CapsuleLayer(num_capsule=16, dim_capsule=8, routings=routings, name='digitcaps')(primaryCaps)
     # digitCaps = CapsuleLayer(num_capsule=18, dim_capsule=16, routings=routings, name='digitcaps_inbetween_step')(digitCaps)
     digitCaps = CapsuleLayer(num_capsule=14, dim_capsule=4, routings=routings, name='digitcaps2')(digitCaps)
 

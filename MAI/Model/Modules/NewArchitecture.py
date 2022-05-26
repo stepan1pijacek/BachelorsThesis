@@ -44,7 +44,7 @@ def capsNet_view(input, routings):
     decoder.add(Dense(np.prod((IMG_SIZE, IMG_SIZE, 3)), activation='sigmoid'))
     decoder.add(Reshape(target_shape=(IMG_SIZE, IMG_SIZE, 3), name='out_recon'))
 
-    return [out_caps, decoder(masked_by_y)]
+    return Concatenate[out_caps, decoder(masked_by_y)]
 
 
 def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),

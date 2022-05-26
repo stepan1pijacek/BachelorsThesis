@@ -41,10 +41,6 @@ def capsNet_view(input, routings):
     digitCaps = CapsuleLayer(num_capsule=14, dim_capsule=4, routings=routings, name='digitcaps2')(digitCaps)
 
     out_caps = Length(name='capsnet')(digitCaps)
-    out_caps = Dense(256)(out_caps)
-    out_caps = Dropout(0.5)(out_caps)
-    out_caps = Dense(16)(out_caps)
-
     return out_caps
 
 

@@ -6,6 +6,7 @@ from tensorflow.python.keras.applications.resnet_v2 import ResNet50V2, ResNet101
 from tensorflow.python.keras.layers import *
 from tensorflow.python.keras.layers import Dense
 
+from MAI.Model.ReCa.GammaCapsuleLayer import GammaCapsule
 from MAI.Model.Modules.help_fucntions import PrimaryCap, CapsuleLayer, Length
 from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
 
@@ -30,9 +31,10 @@ def capsNet_view(input, routings):
     primaryCaps = PrimaryCap(model, dim_capsule=2, n_channels=8, kernel_size=7, strides=2, padding='valid')
 
     # Layer 3: Capsule layer. Routing algorithm works here.
-    digitCaps = CapsuleLayer(num_capsule=16, dim_capsule=8, routings=routings, name='digitcaps')(primaryCaps)
+    digitCaps = CapsuleLayer(num_capsule=16, dim_capsule=8, routings=routings, name='digitcaps')(gammaCaps)
     digitCaps = CapsuleLayer(num_capsule=18, dim_capsule=16, routings=routings, name='digitcaps_inbetween_step')(digitCaps)
     digitCaps = CapsuleLayer(num_capsule=14, dim_capsule=4, routings=routings, name='digitcaps2')(digitCaps)
+
 
     out_caps = Length(name='capsnet')(digitCaps)
     return out_caps

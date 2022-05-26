@@ -1,10 +1,11 @@
 import numpy as np
 import tensorflow as tf
 
+from tensorflow.keras import layers
 from MAI.Utils.Functions.Squash import squash
 
 
-class GammaCapsule(tf.keras.Model):
+class GammaCapsule(layers.Layer):
 
     def __init__(self, in_capsules, in_dim, out_capsules, out_dim, stdev=0.2, routing_iterations=2, use_bias=True,
                  name=''):
@@ -28,9 +29,11 @@ class GammaCapsule(tf.keras.Model):
                                                                              dtype='float32'),
                                         trainable=True)
 
-    def call(self, u):
+    def call(self, u, **kwargs):
         """
             param: u - (batch_size, in_caps, in_dim)
+            :param **kwargs:
+            :param u
         """
         batch_size = tf.shape(u)[0]
         u_norm = tf.norm(u, axis=-1)  # (batch_size, in_caps)

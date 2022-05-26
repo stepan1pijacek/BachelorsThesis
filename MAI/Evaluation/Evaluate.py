@@ -13,8 +13,7 @@ from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
 def evaluate(model):
     train_df, test_df, all_labels = main()
     weight_path = "Output/{}_weights.best.hdf5".format('xray_class')
-    train_df['path'] = train_df['path'].astype(str)
-    test_df['path'] = test_df['path'].astype(str)
+
     test_core_idg = ImageDataGenerator(
     )
 
@@ -33,7 +32,8 @@ def evaluate(model):
 
     # load the best weights
     model.load_weights(weight_path)
-    pred_Y = model.predict(test_X, batch_size=BATCH_SIZE, verbose=True)
+    pred_Y = model.predict(test_X, batch_size=4, verbose=True)
+    print(pred_Y)
 
     for c_label, p_count, t_count in zip(all_labels,
                                          100 * np.mean(pred_Y, 0),
@@ -99,7 +99,7 @@ def get_roc_curve(labels, predicted_vals, test_Y):
             plt.title('ROC curve')
             plt.legend(loc='best')
 
-            plt.savefig('Output/trained_net_2.png')
+            plt.savefig('outputs/trained_net_2.png')
 
             cm = multilabel_confusion_matrix(test_Y, y_pred)
             cm_df = pd.DataFrame(cm)

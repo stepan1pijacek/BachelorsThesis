@@ -23,11 +23,11 @@ def global_view(model):
 def capsNet_view(input, routings):
     conv1 = Conv2D(filters=256, kernel_size=9, strides=1, padding='valid', activation='relu', name='conv1')(input)
 
-# Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
-    primarycaps = PrimaryCap(conv1, dim_capsule=2, n_channels=8, kernel_size=7, strides=2, padding='valid')
+    # Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_vector]
+    primarycaps = PrimaryCap(conv1, dim_capsule=8, n_channels=64, kernel_size=9, strides=2, padding='valid')
 
     # Layer 3: Capsule layer. Routing algorithm works here.
-    digitcaps = CapsuleLayer(num_capsule=16, dim_capsule=8, routings=routings, name='digitcaps')(primarycaps)
+    digitcaps = CapsuleLayer(num_capsule=14, dim_capsule=8,  dim_vector=16, num_routing=routings, name='digitcaps')(primarycaps)
     digitcaps = CapsuleLayer(num_capsule=14, dim_capsule=4, routings=routings, name='digitcaps2')(digitcaps)
 
     # Layer 4: This is an auxiliary layer to replace each capsule with its length. Just to match the true label's shape.
@@ -39,7 +39,7 @@ def capsNet_view(input, routings):
 
     # Shared Decoder model in training and prediction
     decoder = models.Sequential(name='decoder')
-    decoder.add(Dense(512, activation='relu', input_dim=16 * 14))
+    decoder.add(Dense(512, activation='relu', input_dim=14 * 14))
     decoder.add(Dense(1024, activation='relu'))
     decoder.add(Dense(np.prod((IMG_SIZE, IMG_SIZE, 3)), activation='sigmoid'))
     decoder.add(Reshape(target_shape=(IMG_SIZE, IMG_SIZE, 3), name='out_recon'))

@@ -45,7 +45,7 @@ def capsNet_view(input, routings):
 
 def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
                     n_class=14,
-                    routings=3,
+                    routings=2,
                     batch_size_o=BATCH_SIZE):
     input = Input(shape=input_shape, batch_size=batch_size_o)
 

@@ -6,7 +6,7 @@ from tensorflow.python.keras.applications.resnet_v2 import ResNet50V2, ResNet101
 from tensorflow.python.keras.layers import *
 from tensorflow.python.keras.layers import Dense
 
-from MAI.Model.GammaCaps.gamma_capsule_network import GammaCapsule
+# from MAI.Model.GammaCaps.gamma_capsule_network import GammaCapsule
 from MAI.Model.Modules.help_fucntions import PrimaryCap, CapsuleLayer, Length
 from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
 

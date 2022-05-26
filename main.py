@@ -9,7 +9,7 @@ from MAI.Evaluation.Evaluate import evaluate
 def main():
     os.environ['CUDA_DEVICE_ORDER'] = 'PCI_BUS_ID'
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-    # train_idk.TrainingClass.training_function(embedded_models())
+    train_idk.TrainingClass.training_function(embedded_models())
     evaluate(embedded_models())
 
 

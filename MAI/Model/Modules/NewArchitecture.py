@@ -16,7 +16,7 @@ def global_view(model):
     efficient = Dense(256)(efficient)
     efficient = Dropout(0.5)(efficient)
     efficient = Dense(16)(efficient)
-    return efficient, inception
+    return efficient
 
 
 def capsNet_view(input, routings):
@@ -45,10 +45,10 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
                     batch_size_o=BATCH_SIZE):
     input = Input(shape=input_shape, batch_size=batch_size_o)
 
-    gv_efficient, gv_inception = global_view(input)
+    gv_efficient = global_view(input)
     cnv = capsNet_view(input, routings)
 
-    fusion = concatenate([gv_efficient, gv_inception, cnv])
+    fusion = concatenate([gv_efficient, cnv])
 
     fusion = Dense(32)(fusion)
     fusion = Dropout(0.2)(fusion)

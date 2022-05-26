@@ -34,12 +34,7 @@ def capsNet_view(input, routings):
     # If using tensorflow, this will not be necessary. :)
     out_caps = Length(name='capsnet')(digitcaps)
 
-    # Shared Decoder model in training and prediction
-    decoder = models.Sequential(name='decoder')
-    decoder.add(Dense(512, activation='relu', input_dim=14 * 14))
-    decoder.add(Reshape(target_shape=(IMG_SIZE, IMG_SIZE, 3), name='out_recon'))
-
-    return Concatenate[out_caps, decoder(out_caps)]
+    return Concatenate[out_caps]
 
 
 def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),

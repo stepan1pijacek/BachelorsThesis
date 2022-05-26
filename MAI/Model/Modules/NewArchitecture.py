@@ -33,7 +33,7 @@ def capsNet_view(input, routings):
     model = Conv2D(128, (3, 3), activation='relu')(model)
     model = Conv2D(128, (3, 3), activation='relu')(model)
 
-    primaryCaps = PrimaryCap(model, dim_capsule=4, n_channels=16, kernel_size=7, strides=2, padding='valid')
+    primaryCaps = PrimaryCap(model, dim_capsule=2, n_channels=8, kernel_size=7, strides=2, padding='valid')
 
     # Layer 3: Capsule layer. Routing algorithm works here.
     digitCaps = CapsuleLayer(num_capsule=16, dim_capsule=8, routings=routings, name='digitcaps')(primaryCaps)

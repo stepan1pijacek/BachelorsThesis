@@ -6,7 +6,7 @@ from tensorflow.python.keras.applications.resnet_v2 import ResNet50V2, ResNet101
 from tensorflow.python.keras.layers import *
 from tensorflow.python.keras.layers import Dense
 
-from MAI.Model.ReCa.GammaCapsuleLayer import GammaCapsule
+from MAI.Model.GammaCaps.gamma_capsule_network import GammaCapsule
 from MAI.Model.Modules.help_fucntions import PrimaryCap, CapsuleLayer, Length
 from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
 
@@ -28,15 +28,15 @@ def capsNet_view(input, routings):
     model = Conv2D(128, (3, 3), activation='relu')(model)
     model = Conv2D(128, (3, 3), activation='relu')(model)
 
-    primaryCaps = PrimaryCap(model, dim_capsule=2, n_channels=8, kernel_size=7, strides=2, padding='valid')
+    primaryCaps = PrimaryCap(model, dim_capsule=4, n_channels=16, kernel_size=7, strides=2, padding='valid')
 
     # Layer 3: Capsule layer. Routing algorithm works here.
-    digitCaps = CapsuleLayer(num_capsule=16, dim_capsule=8, routings=routings, name='digitcaps')(primaryCaps)
+    digitCaps = CapsuleLayer(num_capsule=14, dim_capsule=8, routings=routings, name='digitcaps')(primaryCaps)
     digitCaps = CapsuleLayer(num_capsule=18, dim_capsule=16, routings=routings, name='digitcaps_inbetween_step')(digitCaps)
     digitCaps = CapsuleLayer(num_capsule=14, dim_capsule=4, routings=routings, name='digitcaps2')(digitCaps)
 
-
     out_caps = Length(name='capsnet')(digitCaps)
+
     return out_caps
 
 
@@ -48,6 +48,7 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
 
     gv = global_view(input)
     cnv = capsNet_view(input, routings)
+    # gamma = gamma_view_experiment(input)
 
     fusion = concatenate([gv, cnv])
 

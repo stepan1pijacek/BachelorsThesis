@@ -34,7 +34,7 @@ def evaluate(model):
                                                             classes=all_labels,
                                                             target_size=(IMG_SIZE, IMG_SIZE),
                                                             color_mode='rgb',
-                                                            batch_size=15000))
+                                                            batch_size=15732))
 
     # load the best weights
     model.load_weights(weight_path)

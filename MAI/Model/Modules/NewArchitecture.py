@@ -13,7 +13,7 @@ from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
 
 def global_view(model):
     efficient = ResNet152V2(include_top=False)(model)
-    efficient = GlobalMaxPooling2D()(efficient)
+    efficient = GlobalAveragePooling2D()(efficient)
     efficient = Dense(256)(efficient)
     efficient = Dropout(0.5)(efficient)
     efficient = Dense(16)(efficient)
@@ -33,8 +33,18 @@ def capsNet_view(input, routings):
     # Layer 4: This is an auxiliary layer to replace each capsule with its length. Just to match the true label's shape.
     # If using tensorflow, this will not be necessary. :)
     out_caps = Length(name='capsnet')(digitcaps)
+    # Decoder network.
+    y = Input(shape=(14,))
+    masked_by_y = Mask()([digitcaps, y])  # The true label is used to mask the output of capsule layer. For training
 
-    return out_caps
+    # Shared Decoder model in training and prediction
+    decoder = models.Sequential(name='decoder')
+    decoder.add(Dense(512, activation='relu', input_dim=16 * 14))
+    decoder.add(Dense(1024, activation='relu'))
+    decoder.add(Dense(np.prod((IMG_SIZE, IMG_SIZE, 3)), activation='sigmoid'))
+    decoder.add(Reshape(target_shape=(IMG_SIZE, IMG_SIZE, 3), name='out_recon'))
+
+    return [out_caps, decoder(masked_by_y)]
 
 
 def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),

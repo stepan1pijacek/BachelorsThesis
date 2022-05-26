@@ -18,7 +18,7 @@ class TrainingClass:
         weight_path = "Output/{}_weights.best.hdf5".format('xray_class')
         train_df['path'] = train_df['path'].astype(str).copy()
         core_idg = ImageDataGenerator(
-            horizontal_flip=True,
+            horizontal_flip=False,
             vertical_flip=False,
             height_shift_range=0.1,
             width_shift_range=0.1,

@@ -34,9 +34,6 @@ def capsNet_view(input, routings):
     # If using tensorflow, this will not be necessary. :)
     out_caps = Length(name='capsnet')(digitcaps)
 
-    out_caps = Conv2D(128, (5, 5), activation='relu')(out_caps)
-    out_caps = Conv2D(128, (5, 5), activation='relu')(out_caps)
-
     return out_caps
 
 

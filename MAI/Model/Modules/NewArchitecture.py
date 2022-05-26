@@ -1,12 +1,13 @@
 import tensorflow as tf
 from tensorflow.keras import models
+import numpy as np
 from tensorflow.python.keras.applications.efficientnet import EfficientNetB7
 from tensorflow.python.keras.applications.inception_v3 import InceptionV3
 from tensorflow.python.keras.applications.resnet_v2 import ResNet50V2, ResNet101V2, ResNet152V2
 from tensorflow.python.keras.layers import *
 from tensorflow.python.keras.layers import Dense
 
-from MAI.Model.Modules.help_fucntions import PrimaryCap, CapsuleLayer, Length
+from MAI.Model.Modules.help_fucntions import PrimaryCap, CapsuleLayer, Length, Mask
 from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
 
 
@@ -20,17 +21,10 @@ def global_view(model):
 
 
 def capsNet_view(input, routings):
-    x = Conv2D(64, (5, 5), activation='relu')(input)
-    x = Conv2D(64, (5, 5), activation='relu')(x)
-    x = BatchNormalization()(x)
-
-    x = Conv2D(128, (3, 3), activation='relu')(x)
-    x = Conv2D(128, (3, 3), activation='relu')(x)
-    x = BatchNormalization()(x)
-
+    conv1 = Conv2D(filters=256, kernel_size=9, strides=1, padding='valid', activation='relu', name='conv1')(input)
 
 # Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
-    primarycaps = PrimaryCap(x, dim_capsule=2, n_channels=8, kernel_size=7, strides=2, padding='valid')
+    primarycaps = PrimaryCap(conv1, dim_capsule=2, n_channels=8, kernel_size=7, strides=2, padding='valid')
 
     # Layer 3: Capsule layer. Routing algorithm works here.
     digitcaps = CapsuleLayer(num_capsule=16, dim_capsule=8, routings=routings, name='digitcaps')(primarycaps)
@@ -39,6 +33,10 @@ def capsNet_view(input, routings):
     # Layer 4: This is an auxiliary layer to replace each capsule with its length. Just to match the true label's shape.
     # If using tensorflow, this will not be necessary. :)
     out_caps = Length(name='capsnet')(digitcaps)
+
+    out_caps = Conv2D(128, (5, 5), activation='relu')(out_caps)
+    out_caps = Conv2D(128, (5, 5), activation='relu')(out_caps)
+
     return out_caps
 
 

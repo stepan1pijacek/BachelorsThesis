@@ -65,7 +65,6 @@ class TrainingClass:
         model.compile(
             optimizer=tf.optimizers.RMSprop(
                 learning_rate=params.trans_learning_rate,
-                momentum=params.trans_weight_decay
             ),
             loss=AsymetricLossOptimized,
             metrics=params.METRICS

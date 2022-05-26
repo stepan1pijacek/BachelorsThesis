@@ -21,12 +21,15 @@ def global_view(model):
 
 def capsNet_view(input, routings):
     x = Conv2D(64, (5, 5), activation='relu')(input)
-    x = BatchNormalization()(x)
     x = Conv2D(64, (5, 5), activation='relu')(x)
-    x = Conv2D(128, (3, 3), activation='relu')(x)
-    x = Conv2D(128, (3, 3), activation='relu')(x)
+    x = BatchNormalization()(x)
 
-    # Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
+    x = Conv2D(128, (3, 3), activation='relu')(x)
+    x = Conv2D(128, (3, 3), activation='relu')(x)
+    x = BatchNormalization()(x)
+
+
+# Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
     primarycaps = PrimaryCap(x, dim_capsule=2, n_channels=8, kernel_size=7, strides=2, padding='valid')
 
     # Layer 3: Capsule layer. Routing algorithm works here.

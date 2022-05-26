@@ -17,7 +17,7 @@ def global_view(model):
     inception = Dropout(0.5)(inception)
     inception = Dense(16)(inception)
 
-    efficient = ResNet152V2(include_top=False)(model)
+    efficient = ResNet50V2(include_top=False)(model)
     efficient = GlobalMaxPooling2D()(efficient)
     efficient = Dense(256)(efficient)
     efficient = Dropout(0.5)(efficient)
@@ -46,7 +46,7 @@ def capsNet_view(input, routings):
 
 def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
                     n_class=14,
-                    routings=2,
+                    routings=3,
                     batch_size_o=BATCH_SIZE):
     input = Input(shape=input_shape, batch_size=batch_size_o)
 

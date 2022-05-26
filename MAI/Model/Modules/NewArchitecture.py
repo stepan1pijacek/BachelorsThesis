@@ -31,7 +31,6 @@ def capsNet_view(input, routings):
     model = BatchNormalization()(model)
     model = Conv2D(64, (5, 5), activation='relu')(model)
     model = Conv2D(128, (3, 3), activation='relu')(model)
-    model = Conv2D(128, (3, 3), activation='relu')(model)
 
     primaryCaps = PrimaryCap(model, dim_capsule=2, n_channels=8, kernel_size=7, strides=2, padding='valid')
 

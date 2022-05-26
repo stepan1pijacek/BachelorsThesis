@@ -28,7 +28,7 @@ METRICS = [
 ]
 
 trans_learning_rate = 0.0001
-trans_weight_decay = 1e-5
+trans_weight_decay = 1e-4
 trans_image_size = 256  # We'll resize input images to this size
 trans_image_size_2 = 128  # We'll resize input images to this size
 trans_patch_size = 16  # Size of the patches to be extract from the input images

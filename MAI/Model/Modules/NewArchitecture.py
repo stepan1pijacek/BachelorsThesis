@@ -33,18 +33,13 @@ def capsNet_view(input, routings):
     # Layer 4: This is an auxiliary layer to replace each capsule with its length. Just to match the true label's shape.
     # If using tensorflow, this will not be necessary. :)
     out_caps = Length(name='capsnet')(digitcaps)
-    # Decoder network.
-    y = Input(shape=(14,))
-    masked_by_y = Mask()([digitcaps, y])  # The true label is used to mask the output of capsule layer. For training
 
     # Shared Decoder model in training and prediction
     decoder = models.Sequential(name='decoder')
     decoder.add(Dense(512, activation='relu', input_dim=14 * 14))
-    decoder.add(Dense(1024, activation='relu'))
-    decoder.add(Dense(np.prod((IMG_SIZE, IMG_SIZE, 3)), activation='sigmoid'))
     decoder.add(Reshape(target_shape=(IMG_SIZE, IMG_SIZE, 3), name='out_recon'))
 
-    return Concatenate[out_caps, decoder(masked_by_y)]
+    return Concatenate[out_caps, decoder(out_caps)]
 
 
 def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),

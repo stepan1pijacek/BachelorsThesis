@@ -11,13 +11,7 @@ from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
 
 
 def global_view(model):
-    inception = InceptionV3(include_top=False)(model)
-    inception = GlobalMaxPooling2D()(inception)
-    inception = Dense(256)(inception)
-    inception = Dropout(0.5)(inception)
-    inception = Dense(16)(inception)
-
-    efficient = ResNet50V2(include_top=False)(model)
+    efficient = ResNet152V2(include_top=False)(model)
     efficient = GlobalMaxPooling2D()(efficient)
     efficient = Dense(256)(efficient)
     efficient = Dropout(0.5)(efficient)
@@ -26,20 +20,22 @@ def global_view(model):
 
 
 def capsNet_view(input, routings):
+    x = Conv2D(64, (5, 5), activation='relu')(input)
+    x = BatchNormalization()(x)
+    x = Conv2D(64, (5, 5), activation='relu')(x)
+    x = Conv2D(128, (3, 3), activation='relu')(x)
+    x = Conv2D(128, (3, 3), activation='relu')(x)
 
-    model = Conv2D(64, (5, 5), activation='relu', padding='same')(input)
-    model = BatchNormalization()(model)
-    model = Conv2D(64, (5, 5), activation='relu')(model)
-    model = Conv2D(128, (3, 3), activation='relu')(model)
-
-    primaryCaps = PrimaryCap(model, dim_capsule=2, n_channels=8, kernel_size=7, strides=2, padding='valid')
+    # Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
+    primarycaps = PrimaryCap(x, dim_capsule=2, n_channels=8, kernel_size=7, strides=2, padding='valid')
 
     # Layer 3: Capsule layer. Routing algorithm works here.
-    digitCaps = CapsuleLayer(num_capsule=16, dim_capsule=8, routings=routings, name='digitcaps')(primaryCaps)
-    # digitCaps = CapsuleLayer(num_capsule=18, dim_capsule=16, routings=routings, name='digitcaps_inbetween_step')(digitCaps)
-    digitCaps = CapsuleLayer(num_capsule=14, dim_capsule=4, routings=routings, name='digitcaps2')(digitCaps)
+    digitcaps = CapsuleLayer(num_capsule=16, dim_capsule=8, routings=routings, name='digitcaps')(primarycaps)
+    digitcaps = CapsuleLayer(num_capsule=14, dim_capsule=4, routings=routings, name='digitcaps2')(digitcaps)
 
-    out_caps = Length(name='capsnet')(digitCaps)
+    # Layer 4: This is an auxiliary layer to replace each capsule with its length. Just to match the true label's shape.
+    # If using tensorflow, this will not be necessary. :)
+    out_caps = Length(name='capsnet')(digitcaps)
     return out_caps
 
 

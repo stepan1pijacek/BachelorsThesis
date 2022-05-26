@@ -63,9 +63,8 @@ class TrainingClass:
         #              metrics=params.METRICS
         #              )
         model.compile(
-            optimizer=tfa.optimizers.AdamW(
+            optimizer=tf.optimizers.Adam(
                 learning_rate=params.trans_learning_rate,
-                weight_decay=params.trans_weight_decay
             ),
             loss=AsymetricLossOptimized,
             metrics=params.METRICS
@@ -79,7 +78,7 @@ class TrainingClass:
             train_gen,
             batch_size=params.BATCH_SIZE,
             epochs=100,
-            validation_steps=valid_gen.samples // params.BATCH_SIZE,
+            validation_steps=valid_gen.samples // 4,
             steps_per_epoch=500,
             validation_data=valid_gen,
             callbacks=[log, checkpoint, lr_decay]

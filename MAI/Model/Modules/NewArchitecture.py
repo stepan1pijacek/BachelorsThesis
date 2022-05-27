@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tensorflow.keras import models
+from tensorflow.keras import models, layers
 import numpy as np
 from tensorflow.python.keras.applications.efficientnet import EfficientNetB7
 from tensorflow.python.keras.applications.inception_v3 import InceptionV3
@@ -57,8 +57,6 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
 
     fusion = concatenate([gv_efficient, gv_fifty, cnv])
 
-    fusion = Dense(64)(fusion)
-    fusion = Dropout(0.5)(fusion)
     fusion = Dense(32)(fusion)
     fusion = Dropout(0.2)(fusion)
     fusion = Dense(14, activation="sigmoid")(fusion)
@@ -66,3 +64,44 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     train_Model = models.Model(input, fusion)
 
     return train_Model
+
+
+def new_embedded_model(input_shape=(IMG_SIZE, IMG_SIZE, 3),
+                       n_class=14,
+                       routings=2,
+                       batch_size_o=BATCH_SIZE):
+    input = layers.Input(shape=input_shape, batch_size=batch_size_o)
+
+    # Layer 1: Just a conventional Conv2D layer
+    x = Conv2D(64, (5, 5), activation='relu')(input)
+    x = BatchNormalization()(x)
+    x = Conv2D(64, (5, 5), activation='relu')(x)
+    x = Conv2D(128, (3, 3), activation='relu')(x)
+    x = Conv2D(128, (3, 3), activation='relu')(x)
+
+    # Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
+    primarycaps = PrimaryCap(x, dim_capsule=2, n_channels=8, kernel_size=7, strides=2, padding='valid')
+
+    # Layer 3: Capsule layer. Routing algorithm works here.
+    digitcaps = CapsuleLayer(num_capsule=16, dim_capsule=8, routings=routings, name='digitcaps')(primarycaps)
+    digitcaps = CapsuleLayer(num_capsule=14, dim_capsule=4, routings=routings, name='digitcaps2')(digitcaps)
+
+    # Layer 4: This is an auxiliary layer to replace each capsule with its length. Just to match the true label's shape.
+    # If using tensorflow, this will not be necessary. :)
+    out_caps = Length(name='capsnet')(digitcaps)
+
+    model2 = ResNet50V2(include_top=False, weights="imagenet")(input)
+    model2 = GlobalAveragePooling2D()(model2)
+    model2 = Dense(256)(model2)
+    model2 = Dropout(0.5)(model2)
+    model2 = Dense(16)(model2)
+
+    common = concatenate([out_caps, model2])
+    #
+    common = Dense(32)(common)
+    common = Dropout(0.2)(common)
+    common = Dense(14, activation="sigmoid")(common)
+
+    train_model = models.Model(input, common)
+
+    return train_model

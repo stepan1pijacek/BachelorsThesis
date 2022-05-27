@@ -14,16 +14,22 @@ from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
 def global_view(model):
     efficient = ResNet152V2(include_top=False)(model)
     efficient = GlobalAveragePooling2D()(efficient)
-    efficient = Dense(256)(efficient)
+    efficient = Dense(256, activation='relu')(efficient)
     efficient = Dropout(0.5)(efficient)
-    efficient = Dense(14)(efficient)
+    efficient = Dense(14, activation='sigmoid')(efficient)
+
+    resnet_oneZeroOne = ResNet101V2(include_top=False)(model)
+    resnet_oneZeroOne = GlobalAveragePooling2D()(resnet_oneZeroOne)
+    resnet_oneZeroOne = Dense(256, activation='relu')(resnet_oneZeroOne)
+    resnet_oneZeroOne = Dropout(0.5)(resnet_oneZeroOne)
+    resnet_oneZeroOne = Dense(14, activation='sigmoid')(resnet_oneZeroOne)
 
     resnet_fifty = ResNet50V2(include_top=False)(model)
     resnet_fifty = GlobalAveragePooling2D()(resnet_fifty)
-    resnet_fifty = Dense(256)(resnet_fifty)
+    resnet_fifty = Dense(256, activation='relu')(resnet_fifty)
     resnet_fifty = Dropout(0.5)(resnet_fifty)
-    resnet_fifty = Dense(14)(resnet_fifty)
-    return efficient, resnet_fifty
+    resnet_fifty = Dense(14, activation='sigmoid')(resnet_fifty)
+    return efficient, resnet_fifty, resnet_oneZeroOne
 
 
 def capsNet_view(input, routings):
@@ -43,7 +49,12 @@ def capsNet_view(input, routings):
     # If using tensorflow, this will not be necessary. :)
     out_caps = Length(name='capsnet')(digitcaps)
 
-    return out_caps
+    # Layer 5: Decoding layer of the capsule output
+    decoded = Dense(384, activation='relu')(out_caps)
+    decoded = Dense(768, activation='relu')(decoded)
+    decoded = Dense(14, activation='sigmoid')(decoded)
+
+    return decoded
 
 
 def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
@@ -52,7 +63,7 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
                     batch_size_o=BATCH_SIZE):
     input = Input(shape=input_shape, batch_size=batch_size_o)
 
-    gv_efficient, gv_fifty = global_view(input)
+    gv_efficient, gv_fifty, gv_one = global_view(input)
     cnv = capsNet_view(input, routings)
 
     fusion = concatenate([gv_efficient, gv_fifty, cnv])

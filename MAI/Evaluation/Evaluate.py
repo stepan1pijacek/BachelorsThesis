@@ -14,27 +14,21 @@ def evaluate(model):
     train_df, test_df, all_labels = main()
     weight_path = "Output/{}_weights.best.hdf5".format('xray_class')
     test_df['path'] = test_df['path'].astype(str)
-    test_core_idg = ImageDataGenerator(samplewise_center=True,
-                                       samplewise_std_normalization=True,
-                                       horizontal_flip=True,
-                                       vertical_flip=False,
-                                       height_shift_range=0.1,
-                                       width_shift_range=0.1,
-                                       rotation_range=10,
-                                       shear_range=0.1,
-                                       fill_mode='reflect',
-                                       zoom_range=0.2
-                                       )
+    test_core_idg = ImageDataGenerator(
+    )
 
-    test_X, test_Y = next(test_core_idg.flow_from_dataframe(dataframe=test_df,
-                                                            directory=None,
-                                                            x_col='path',
-                                                            y_col='newLabel',
-                                                            class_mode='categorical',
-                                                            classes=all_labels,
-                                                            target_size=(IMG_SIZE, IMG_SIZE),
-                                                            color_mode='rgb',
-                                                            batch_size=12883))
+    test_X, test_Y = next(test_core_idg.flow_from_dataframe(
+        dataframe=test_df,
+        directory=None,
+        x_col='path',
+        y_col='newLabel',
+        class_mode='categorical',
+        classes=all_labels,
+        target_size=(IMG_SIZE, IMG_SIZE),
+        # target_size=(params.IMG_SIZE, params.IMG_SIZE),
+        color_mode='rgb',
+        batch_size=15732)
+    )
 
     # load the best weights
     model.load_weights(weight_path)
@@ -105,7 +99,7 @@ def get_roc_curve(labels, predicted_vals, test_Y):
             plt.title('ROC curve')
             plt.legend(loc='best')
 
-            plt.savefig('outputs/trained_net_2.png')
+            plt.savefig('Output/trained_net_2.png')
 
             cm = multilabel_confusion_matrix(test_Y, y_pred)
             cm_df = pd.DataFrame(cm)

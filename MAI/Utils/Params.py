@@ -3,7 +3,7 @@ from tensorflow import keras
 IMG_SIZE = 384
 IMG_SIZE_2 = 384
 NUM_CLASSES = 14
-BATCH_SIZE = 2
+BATCH_SIZE = 4
 NUM_EPOCHS = 100
 
 DIMENSIONS = "14,14,28"
@@ -27,7 +27,7 @@ METRICS = [
     keras.metrics.AUC(name='prc', curve='PR'),  # precision-recall curve
 ]
 
-trans_learning_rate = 0.0001
+trans_learning_rate = 0.0003
 trans_weight_decay = 1e-5
 trans_image_size = 256  # We'll resize input images to this size
 trans_image_size_2 = 128  # We'll resize input images to this size

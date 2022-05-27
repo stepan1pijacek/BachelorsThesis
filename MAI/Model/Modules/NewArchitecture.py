@@ -57,6 +57,8 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
 
     fusion = concatenate([gv_efficient, gv_fifty, cnv])
 
+    fusion = Dense(64)(fusion)
+    fusion = Dropout(0.5)(fusion)
     fusion = Dense(32)(fusion)
     fusion = Dropout(0.2)(fusion)
     fusion = Dense(14, activation="sigmoid")(fusion)

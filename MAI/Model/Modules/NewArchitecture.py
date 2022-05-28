@@ -64,10 +64,11 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     input = Input(shape=input_shape, batch_size=batch_size_o)
 
     gv_efficient, gv_fifty, gv_one = global_view(input)
-    fusion = concatenate([gv_efficient, gv_fifty])
-    cnv = capsNet_view(fusion, routings)
+    cnv = capsNet_view(input, routings)
 
-    common = Dense(32)(cnv)
+    fusion = concatenate([gv_efficient, gv_fifty, cnv, gv_one])
+
+    common = Dense(32)(fusion)
     common = Dropout(0.2)(common)
     common = Dense(14, activation="sigmoid")(common)
 

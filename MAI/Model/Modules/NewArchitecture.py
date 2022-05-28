@@ -50,9 +50,9 @@ def capsNet_view(input, routings):
     out_caps = Length(name='capsnet')(digitcaps)
 
     # Layer 5: Decoding layer of the capsule output
-    decoded = Dense(384, activation='relu')(out_caps)
+    decoded = Dense(384, activation='relu', input_dim=14 * 14)(out_caps)
+    decoded = Dropout(0.5)(decoded)
     decoded = Dense(768, activation='relu')(decoded)
-    decoded = Dense(14, activation='sigmoid')(decoded)
 
     return decoded
 
@@ -64,15 +64,14 @@ def embedded_models(input_shape=(IMG_SIZE, IMG_SIZE, 3),
     input = Input(shape=input_shape, batch_size=batch_size_o)
 
     gv_efficient, gv_fifty, gv_one = global_view(input)
-    cnv = capsNet_view(input, routings)
+    fusion = concatenate([gv_efficient, gv_fifty])
+    cnv = capsNet_view(fusion, routings)
 
-    fusion = concatenate([gv_efficient, gv_fifty, cnv])
+    common = Dense(32)(cnv)
+    common = Dropout(0.2)(common)
+    common = Dense(14, activation="sigmoid")(common)
 
-    fusion = Dense(32)(fusion)
-    fusion = Dropout(0.2)(fusion)
-    fusion = Dense(14, activation="sigmoid")(fusion)
-
-    train_Model = models.Model(input, fusion)
+    train_Model = models.Model(input, common)
 
     return train_Model
 

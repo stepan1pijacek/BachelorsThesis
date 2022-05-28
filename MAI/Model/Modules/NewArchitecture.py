@@ -50,7 +50,7 @@ def capsNet_view(input, routings):
     out_caps = Length(name='capsnet')(digitcaps)
 
     # Layer 5: Decoding layer of the capsule output
-    decoded = Dense(384, activation='relu', input_dim=14 * 14)(out_caps)
+    decoded = Dense(384, activation='relu')(out_caps)
     decoded = Dropout(0.5)(decoded)
     decoded = Dense(768, activation='relu')(decoded)
 

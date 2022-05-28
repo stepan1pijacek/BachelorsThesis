@@ -78,7 +78,7 @@ class TrainingClass:
             train_gen,
             batch_size=params.BATCH_SIZE,
             epochs=100,
-            validation_steps=valid_gen.samples // 4,
+            validation_steps=valid_gen.samples // 8,
             steps_per_epoch=500,
             validation_data=valid_gen,
             callbacks=[log, checkpoint, lr_decay]

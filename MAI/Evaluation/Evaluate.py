@@ -35,7 +35,6 @@ def evaluate(model):
         class_mode='categorical',
         classes=all_labels,
         target_size=(IMG_SIZE, IMG_SIZE),
-        # target_size=(params.IMG_SIZE, params.IMG_SIZE),
         color_mode='rgb',
         batch_size=12880)
     )

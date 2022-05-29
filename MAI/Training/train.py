@@ -1,6 +1,5 @@
 import tensorflow as tf
 
-import tensorflow_addons as tfa
 from pickle import dump
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.python.keras.utils.version_utils import callbacks
@@ -56,12 +55,6 @@ class TrainingClass:
                                                save_best_only=True, save_weights_only=True, verbose=1)
         lr_decay = callbacks.LearningRateScheduler(schedule=lambda epoch: 0.001 * (0.0001 ** epoch))
 
-        # compile the model
-        # model.compile(optimizer=tfa.optimizers.AdamW(learning_rate=params.trans_learning_rate,
-        #                                             weight_decay=params.trans_weight_decay),
-        #              loss=AsymetricLossOptimized,
-        #              metrics=params.METRICS
-        #              )
         model.compile(
             optimizer=tf.optimizers.Adam(
                 learning_rate=params.trans_learning_rate,

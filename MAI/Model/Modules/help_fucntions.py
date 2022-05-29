@@ -1,7 +1,5 @@
 import tensorflow as tf
 
-from tensorflow.python.keras.layers import *
-
 import tensorflow.keras.backend as K
 from tensorflow.keras import initializers, layers
 

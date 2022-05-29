@@ -25,6 +25,9 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+/denseNet_384
+/resNet_384
+/vgg19_384
 MANIFEST
 
 # PyInstaller

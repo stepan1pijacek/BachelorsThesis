@@ -42,7 +42,7 @@ def evaluate(model):
 
     # load the best weights
     model.load_weights(weight_path)
-    pred_Y = model.predict(test_X, batch_size=BATCH_SIZE, verbose=True)
+    pred_Y = model.predict(test_Y, batch_size=BATCH_SIZE, verbose=True)
     print(pred_Y)
 
     for c_label, p_count, t_count in zip(all_labels,

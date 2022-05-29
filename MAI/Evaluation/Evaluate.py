@@ -13,7 +13,8 @@ from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
 
 def evaluate(model):
     train_df, test_df, all_labels = main()
-    weight_path = "Output/xray_class_weights.best.hdf5"
+    weight_path = "Output/xray_class_weights.last.hdf5"
+    print(weight_path)
     test_df['path'] = test_df['path'].astype(str)
     test_core_idg = ImageDataGenerator(
         rescale=1. / 255
@@ -34,7 +35,7 @@ def evaluate(model):
 
     # load the best weights
     model.load_weights(weight_path)
-    pred_Y = model.predict(test_X, batch_size=8, verbose=True)
+    pred_Y = model.predict(test_X, batch_size=4, verbose=True)
     print(pred_Y)
 
     for c_label, p_count, t_count in zip(all_labels,

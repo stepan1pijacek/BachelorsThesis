@@ -27,12 +27,12 @@ def evaluate(model):
         target_size=(IMG_SIZE, IMG_SIZE),
         # target_size=(params.IMG_SIZE, params.IMG_SIZE),
         color_mode='rgb',
-        batch_size=15732)
+        batch_size=12880)
     )
 
     # load the best weights
     model.load_weights(weight_path)
-    pred_Y = model.predict(test_X, batch_size=2, verbose=True)
+    pred_Y = model.predict(test_X, batch_size=8, verbose=True)
     print(pred_Y)
 
     for c_label, p_count, t_count in zip(all_labels,

@@ -15,7 +15,7 @@ def evaluate(model):
     weight_path = "Output/{}_weights.best.hdf5".format('xray_class')
     test_df['path'] = test_df['path'].astype(str)
     test_core_idg = ImageDataGenerator(
-        rescale=1. / 255
+        # rescale=1. / 255
     )
 
     test_X, test_Y = next(test_core_idg.flow_from_dataframe(
@@ -28,7 +28,7 @@ def evaluate(model):
         target_size=(IMG_SIZE, IMG_SIZE),
         # target_size=(params.IMG_SIZE, params.IMG_SIZE),
         color_mode='rgb',
-        batch_size=12880)
+        batch_size=-1)
     )
 
     # load the best weights

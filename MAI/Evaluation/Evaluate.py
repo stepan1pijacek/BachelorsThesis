@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import sys
 import seaborn
 from sklearn.metrics import roc_curve, roc_auc_score, \
     accuracy_score, precision_score, recall_score, f1_score, multilabel_confusion_matrix
@@ -12,7 +13,7 @@ from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
 
 def evaluate(model):
     train_df, test_df, all_labels = main()
-    weight_path = "Output/{}_weights.best.hdf5".format('xray_class')
+    weight_path = "Output/xray_class_weights.best.hdf5"
     test_df['path'] = test_df['path'].astype(str)
     test_core_idg = ImageDataGenerator(
         rescale=1. / 255
@@ -54,6 +55,22 @@ def evaluate(model):
     table = zip(all_labels, auc_rocs, thresholds, sensitivity, specificity, accuracy, precision, recall, f1)
     print(tabulate(table, headers=['Pathology', 'AUC', 'Threshold Value', 'Sensitivity', 'Specificity', 'Accuracy',
                                    'Precision', 'Recall', 'F1 Score'], tablefmt='fancy_grid'))
+
+    original_stdout = sys.stdout
+    table = zip(all_labels, auc_rocs, thresholds, sensitivity, specificity, accuracy, precision, recall, f1)
+    with open(f'outputs/results_test.txt', 'w', encoding="utf-8") as f:
+        sys.stdout = f
+        print(f"Mean AUC : {mean(auc_rocs)}")
+        print(f"Mean sensitivity : {mean(sensitivity)}")
+        print(f"Mean specificity : {mean(specificity)}")
+        print(f"Mean accuracy : {mean(accuracy)}")
+        print(f"Mean precision : {mean(precision)}")
+        print(f"Mean recall : {mean(recall)}")
+        print(f"Mean f1 : {mean(f1)}")
+
+        print(tabulate(table, headers=['Pathology', 'AUC', 'Threshold Value', 'Sensitivity', 'Specificity', 'Accuracy',
+                                       'Precision', 'Recall', 'F1 Score'], tablefmt='fancy_grid'))
+        sys.stdout = original_stdout
 
 
 def get_roc_curve(labels, predicted_vals, test_Y):

@@ -24,7 +24,7 @@ def evaluate(model):
         rotation_range=10,
         shear_range=0.1,
         fill_mode='reflect',
-        zoom_range=0.2,
+        zoom_range=0.2
     )
 
     test_X, test_Y = next(test_core_idg.flow_from_dataframe(

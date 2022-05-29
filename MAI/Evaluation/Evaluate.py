@@ -13,11 +13,18 @@ from MAI.Utils.Params import IMG_SIZE, BATCH_SIZE
 
 def evaluate(model):
     train_df, test_df, all_labels = main()
-    weight_path = "Output/xray_class_weights.last.hdf5"
+    weight_path = "Output/xray_class_weights.best.hdf5"
     print(weight_path)
     test_df['path'] = test_df['path'].astype(str)
     test_core_idg = ImageDataGenerator(
-        rescale=1. / 255
+        horizontal_flip=False,
+        vertical_flip=False,
+        height_shift_range=0.1,
+        width_shift_range=0.1,
+        rotation_range=10,
+        shear_range=0.1,
+        fill_mode='reflect',
+        zoom_range=0.2,
     )
 
     test_X, test_Y = next(test_core_idg.flow_from_dataframe(
@@ -35,7 +42,7 @@ def evaluate(model):
 
     # load the best weights
     model.load_weights(weight_path)
-    pred_Y = model.predict(test_X, batch_size=4, verbose=True)
+    pred_Y = model.predict(test_X, batch_size=BATCH_SIZE, verbose=True)
     print(pred_Y)
 
     for c_label, p_count, t_count in zip(all_labels,
@@ -59,7 +66,7 @@ def evaluate(model):
 
     original_stdout = sys.stdout
     table = zip(all_labels, auc_rocs, thresholds, sensitivity, specificity, accuracy, precision, recall, f1)
-    with open(f'outputs/results_test.txt', 'w', encoding="utf-8") as f:
+    with open(f'Output/results_test.txt', 'w', encoding="utf-8") as f:
         sys.stdout = f
         print(f"Mean AUC : {mean(auc_rocs)}")
         print(f"Mean sensitivity : {mean(sensitivity)}")

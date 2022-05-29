@@ -28,7 +28,7 @@ def evaluate(model):
         target_size=(IMG_SIZE, IMG_SIZE),
         # target_size=(params.IMG_SIZE, params.IMG_SIZE),
         color_mode='rgb',
-        batch_size=-1)
+        batch_size=12880)
     )
 
     # load the best weights

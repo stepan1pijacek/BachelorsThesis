@@ -15,7 +15,7 @@ def evaluate(model):
     weight_path = "Output/{}_weights.best.hdf5".format('xray_class')
     test_df['path'] = test_df['path'].astype(str)
     test_core_idg = ImageDataGenerator(
-        # rescale=1. / 255
+        rescale=1. / 255
     )
 
     test_X, test_Y = next(test_core_idg.flow_from_dataframe(
@@ -33,7 +33,7 @@ def evaluate(model):
 
     # load the best weights
     model.load_weights(weight_path)
-    pred_Y = model.predict(test_X, batch_size=1, verbose=True)
+    pred_Y = model.predict(test_X, batch_size=4, verbose=True)
     print(pred_Y)
 
     for c_label, p_count, t_count in zip(all_labels,
